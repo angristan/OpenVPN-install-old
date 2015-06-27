@@ -51,24 +51,21 @@ else
         openvpn --genkey --secret keys/the.key
         cd /etc/openvpn/easy-rsa/keys
         cp ca.crt dh2048.pem server.crt server.key the.key ../../
-        echo -e "$VERT""################################"
-        echo -e "$VERT""# Création de la configuration #"
-        echo -e "$VERT""################################"
+        echo -e "$VERT""########################################"
+        echo -e "$VERT""# Création de la configuration serveur #"
+        echo -e "$VERT""########################################"
         mkdir /etc/openvpn/jail
         mkdir /etc/openvpn/jail//tmp
         mkdir /etc/openvpn/confuser
         cd /etc/openvpn
         #On écrit la configuration du serveur
-        #On utilise TCP
-        #comp-lzo pour la compression
-        #OpenDNS pour les serveur DNS
-        #/var/log/openvpn/openvpn.log pour le log
-        echo "# Serveur
+        cat >> server.conf << "EOF"
+        # Serveur
         mode server
-        proto tcp
-        port $PORT
+        proto tcp #On utilise TCP
+        port $PORT #On utilise le port défini par l'utilisateur
         dev tun
-        comp-lzo
+        comp-lzo #Compression
 
         # Clés et certificats
         ca ca.crt
@@ -81,7 +78,7 @@ else
         # Réseau
         server 10.10.10.0 255.255.255.0
         push "redirect-gateway def1 bypass-dhcp"
-        push "dhcp-option DNS 208.67.222.222"
+        push "dhcp-option DNS 208.67.222.222" #OpenDNS pour les serveur DNS
         push "dhcp-option DNS 208.67.220.220"
         keepalive 10 120
 
@@ -93,10 +90,11 @@ else
         persist-tun
 
         # Log
-        verb 3
+        verb 3 #Niveau de log
         mute 20
         status openvpn-status.log
-        log-append /var/log/openvpn/openvpn.log" > server.conf
+        log-append /var/log/openvpn/openvpn.log #Fchier log
+        EOF #Fin de la configuration
         mkdir /var/log/openvpn/ #On crée le dossier et fichier de log
         touch /var/log/openvpn/openvpn.log
         echo -e "$VERT""########################"
@@ -125,12 +123,13 @@ else
         ./build-key-pass $CLIENT
         mkdir /etc/openvpn/confuser/$CLIENT
         cp keys/$CLIENT*.* keys/the.key keys/ca.crt /etc/openvpn/confuser/$CLIENT/
-        echo -e "$VERT""################################"
-        echo -e "$VERT""# Création de la configuration #"
-        echo -e "$VERT""################################"
+        echo -e "$VERT""##########################################"
+        echo -e "$VERT""# Création de la configuration du client #"
+        echo -e "$VERT""##########################################"
         cd /etc/openvpn/confuser/$CLIENT/
-        echo "# Client
-        client
+        cat >> client.conf << "EOF"
+        # Client
+        OpenVPN $IP TCP-$PORT #Nom du client, aucun impact
         dev tun
         proto tcp-client
         remote $IP $PORT
@@ -147,8 +146,9 @@ else
         nobind
         persist-key
         persist-tun
-        comp-lzo
-        verb 3" > client.conf
+        comp-lzo #Compression
+        verb 3 #Niveau de log
+        EOF #Fin du fichier de configuration
         cp client.conf client.ovpn
         chmod +r * #On rend les clé lisibles
         zip $CLIENT-vpn.zip * #On zip le tout pour faciliter la récupération de la conf
