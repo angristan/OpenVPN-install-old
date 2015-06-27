@@ -20,4 +20,4 @@ Vous pouvez relancer ce script autant de fois que vous le voulez pour créer des
 Ce script marchera sur :
 - Serveur dédié
 - VPS VMware et KVM
-- VPS OpenVZ avec le module TUN/TAP (vous pouvez en trouver chez [PulseHeberg](http://manager.pulseheberg.com/aff.php?aff=1204))
+- VPS OpenVZ avec le module TUN/TAP activé (vous pouvez en trouver chez [PulseHeberg](http://manager.pulseheberg.com/aff.php?aff=1204))
