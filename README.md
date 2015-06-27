@@ -6,7 +6,7 @@ Un article sur mon blog au sujet de ce script est en cours de rédaction.
 ###Utilisation
 Voici les 3 commandes à rentrer :
 
-`wget https://github.com/Angristan/OpenVPN-install/blob/master/openvpn-install.sh`
+`wget https://raw.githubusercontent.com/Angristan/OpenVPN-install/master/openvpn-install.sh`
 
 `chmod +x openvpn-install.sh`
 
