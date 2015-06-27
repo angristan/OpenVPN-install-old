@@ -19,4 +19,4 @@ Vous pouvez relancer ce script autant de fois que vous le voulez pour créer des
 ###Quel serveur utiliser ?
 Ce script marchera sur tout serveur dédié utilisant Debian 8, et sur les VPS OpenVZ ayant le module TUN/TAP d'activé.
 
-Je vous conseille [PulseHeberg](http://manager.pulseheberg.com/aff.php?aff=1204), qui propose des VPS où vous pouvez activer ce module. Ils disposent d'uene très bonne bande passante avec traffic illimité et à petit prix, et cela dans plusieurs pays.
+Je vous conseille [PulseHeberg](http://manager.pulseheberg.com/aff.php?aff=1204), qui propose des VPS où vous pouvez activer ce module. Ils disposent d'une très bonne bande passante avec traffic illimité et à petit prix, et cela dans plusieurs pays.
