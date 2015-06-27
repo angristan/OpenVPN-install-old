@@ -5,7 +5,9 @@ Ce script Bash vous permet d'installer un serveur OpenVPN simplement et rapideme
 Voici les 3 commandes à rentrer :
 
 `wget https://github.com/Angristan/OpenVPN-install/blob/master/openvpn-install.sh`
+
 `chmod +x openvpn-install.sh`
+
 `./openvpn-install.sh`
 
 Le script vous permet de faire 2 choses : installer OpenVPN ou créer un utilisateur.
