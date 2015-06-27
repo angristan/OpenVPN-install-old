@@ -1,7 +1,8 @@
 #!/bin/bash
 #Définition des variables de coloration
-VERT="\\033[1;32m"
 ROUGE="\\033[1;31m"
+VERT="\\033[1;32m"
+JAUNE="\\033[1;33m"
 BLEU="\\033[1;34m"
 
 echo -e "${BLEU}""###########################################################################"
