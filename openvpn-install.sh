@@ -147,7 +147,7 @@ else
         echo -e "$VERT"'scp' "$USER@$IP:$CLIENT-vpn.zip $CLIENT-vpn.zip"
         #La variable $USER pointe sur l'utilisateur actuel.
         #Si c'est root, la conf sera dans /root
-        #Sinon dans /home/$USER
+        #Sinon dans /home/$USER/
         exit
       ;;
       "Quiter")
