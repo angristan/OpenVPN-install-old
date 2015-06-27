@@ -6,7 +6,7 @@ BLEU="\\033[1;34m"
 
 echo -e "${BLEU}""###########################################################################"
 echo -e "$BLEU""#                                                                         #"
-echo -e "$BLEU""#  ""$JAUNE""Ce script bash installe un serveur OpenDNS sur Debian 8 uniquement""$BLEU""     #"
+echo -e "$BLEU""#  ""$JAUNE""Ce script bash installe un serveur OpenVPN sur Debian 8 uniquement""$BLEU""     #"
 echo -e "$BLEU""# ""$JAUNE""Le serveur utilisera le protocole TCP sur le port 443 ainsi que OpenDNS""$BLEU"" #"
 echo -e "$BLEU""#                                                                         #"
 echo -e "$BLEU""###########################################################################"
