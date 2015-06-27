@@ -1,6 +1,8 @@
 # OpenVPN-install
 Ce script Bash vous permet d'installer un serveur OpenVPN simplement et rapidement sous Debian 8 *uniquement*.
 
+Un article sur mon blog au sujet de ce script est en cours de rédaction.
+
 ###Utilisation
 Voici les 3 commandes à rentrer :
 
