@@ -32,9 +32,13 @@ else
   do
     case $opt in
       "Installer le serveur OpenVPN")
-        echo -e "$VERT""##Installation de OpenVPN"
+        echo -e "$VERT""###########################"
+        echo -e "$VERT""# Installation de OpenVPN #"
+        echo -e "$VERT""###########################"
         apt-get -y install openvpn easy-rsa zip
-        echo -e "$VERT""##Création des clés/certificatst"
+        echo -e "$VERT""##################################"
+        echo -e "$VERT""# Création des clés/certificatst #"
+        echo -e "$VERT""##################################"
         cd /etc/openvpn/
         mkdir easy-rsa
         cp -R /usr/share/easy-rsa/* easy-rsa/
@@ -47,7 +51,9 @@ else
         openvpn --genkey --secret keys/the.key
         cd /etc/openvpn/easy-rsa/keys
         cp ca.crt dh2048.pem server.crt server.key the.key ../../
-        echo -e "$VERT""##Création de la configuration"
+        echo -e "$VERT""################################"
+        echo -e "$VERT""# Création de la configuration #"
+        echo -e "$VERT""################################"
         mkdir /etc/openvpn/jail
         mkdir /etc/openvpn/jail//tmp
         mkdir /etc/openvpn/confuser
@@ -93,8 +99,9 @@ else
         log-append /var/log/openvpn/openvpn.log" > server.conf
         mkdir /var/log/openvpn/ #On crée le dossier et fichier de log
         touch /var/log/openvpn/openvpn.log
-
-        echo -e "$VERT""##Configuration réseau"
+        echo -e "$VERT""########################"
+        echo -e "$VERT""# Configuration réseau #"
+        echo -e "$VERT""########################"
         systemctl enable openvpn #Activation d'OpenVPn au boot
         service openvpn start #Démarrage du daemon OpenVPN
         sed -i '/ipv4.ip_forward/s/^#//g' /etc/sysctl.conf
@@ -110,13 +117,17 @@ else
         echo -e "$BLEU""Mais vous pouvez créer autant d'utilisateurs que vous voulez,"
         echo -e "$BLEU""et donc avoir autant de connexions simultanées que vous voulez ! :)"
         read -p "Nom de l'utilisateur (lettres uniquement) : " CLIENT
-        echo -e "$VERT""##Création des clés et certificats"
+        echo -e "$VERT""####################################"
+        echo -e "$VERT""# Création des clés et certificats #"
+        echo -e "$VERT""####################################"
         cd /etc/openvpn/easy-rsa
         source vars
         ./build-key-pass $CLIENT
         mkdir /etc/openvpn/confuser/$CLIENT
         cp keys/$CLIENT*.* keys/the.key keys/ca.crt /etc/openvpn/confuser/$CLIENT/
-        echo -e "$VERT""##Création de la configuration"
+        echo -e "$VERT""################################"
+        echo -e "$VERT""# Création de la configuration #"
+        echo -e "$VERT""################################"
         cd /etc/openvpn/confuser/$CLIENT/
         echo "# Client
         client
