@@ -59,25 +59,28 @@ else
         mkdir /etc/openvpn/confuser
         cd /etc/openvpn
         #On écrit la configuration du serveur
-echo "mode server
+echo "#Serveur
+mode server
 proto tcp
 port $PORT
 dev tun
 
+#Clés et certificats
 ca ca.crt
 cert server.crt
 key server.key
 dh dh2048.pem
--auth the.key 0
+tls-auth the.key 0
 cipher AES-256-CBC
 
+#Réseau
 server 10.10.10.0 255.255.255.0
 push "redirect-gateway def1 bypass-dhcp"
 push "dhcp-option DNS 208.67.222.222" #OpenDNS pour les serveur DNS
 push "dhcp-option DNS 208.67.220.220"
 keepalive 10 120
 
-# Sécurité
+#Sécurité
 user nobody
 group nogroup
 chroot /etc/openvpn/jail
@@ -85,7 +88,7 @@ persist-key
 persist-tun
 comp-lzo #Compression
 
-# Log
+#Log
 verb 3 #Niveau de log
 mute 20
 status openvpn-status.log
