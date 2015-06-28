@@ -161,7 +161,7 @@ EOF
         cp /etc/openvpn/confuser/$CLIENT/$CLIENT-vpn.zip ~/ #Copie dans le répertoire de l'utilisateur
         echo -e "$VERT""La configuration client se trouve dans $PWD/$CLIENT-vpn.zip"
         echo -e "$VERT"'Pour récuprer le fichier de configuration, vous pouvez utiliser cette commande sur votre PC: '
-        echo -e "$VERT"'scp' "$USER@$IP:$CLIENT-vpn.zip $CLIENT-vpn.zip"
+        echo -e "$JAUNE"'scp' "$USER@$IP:$CLIENT-vpn.zip $CLIENT-vpn.zip"
         #La variable $USER pointe sur l'utilisateur actuel.
         #Si c'est root, la conf sera dans /root
         #Sinon dans /home/$USER/
