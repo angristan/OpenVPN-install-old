@@ -65,7 +65,6 @@ mode server
 proto tcp #On utilise TCP
 port $PORT #On utilise le port défini par l'utilisateur
 dev tun
-comp-lzo #Compression
 
 # Clés et certificats
 ca ca.crt
@@ -88,6 +87,7 @@ group nogroup
 chroot /etc/openvpn/jail
 persist-key
 persist-tun
+comp-lzo #Compression
 
 # Log
 verb 3 #Niveau de log
