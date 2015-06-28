@@ -12,7 +12,7 @@ echo -e "$BLEU""# ""$JAUNE""Le serveur utilisera le protocole TCP sur le port 44
 echo -e "$BLEU""#                                                                         #"
 echo -e "$BLEU""###########################################################################"
 
-if [ "$UID" -ne "0" ] #On vérifié les droits
+if [ "$UID" -ne "0" ] #On vérifie les droits
 then
    echo -e "$ROUGE""Veuillez exécuter ce script en tant que root."
    exit
