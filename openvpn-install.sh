@@ -116,7 +116,7 @@ log-append /var/log/openvpn/openvpn.log #Fchier log" > server.conf
         echo -e "$ROUGE""L'IP ET LE PORT DOIVENT ÊTRE LES MÊMES QUE DANS LA CONFIGURATION DU SERVEUR"
         read -p 'IP du serveur : ' IP
         read -p 'Port à utiliser pour le VPN : ' PORT
-        read -p "Nom de l'utilisateur (lettres uniquement) : " CLIENT
+        read -p "Nom de l'utilisateur (pas de caractères scpéciaux) : " CLIENT
         echo -e "$VERT""####################################"
         echo -e "$VERT""# Création des clés et certificats #"
         echo -e "$VERT""####################################"
