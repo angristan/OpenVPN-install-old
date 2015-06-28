@@ -177,7 +177,7 @@ EOF
         sysctl -p
         sed -i 's|pre-up iptables-restore < /etc/iptables.rules||' /etc/network/interfaces
         iptables -F
-        apt-get purge openvpn easy-rsa
+        apt-get autoremove --purge openvpn easy-rsa
         echo -e "$VERT""######################################################"
         echo -e "$VERT""# Le serveur OpenVPN a été complètement désinstallé. #"
         echo -e "$VERT""######################################################"
