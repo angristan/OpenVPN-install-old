@@ -59,13 +59,11 @@ else
         mkdir /etc/openvpn/confuser
         cd /etc/openvpn
         #On écrit la configuration du serveur
-echo "# Serveur
-mode server
-proto tcp #On utilise TCP
-port $PORT #On utilise le port défini par l'utilisateur
+echo "mode server
+proto tcp
+port $PORT
 dev tun
 
-# Clés et certificats
 ca ca.crt
 cert server.crt
 key server.key
@@ -73,7 +71,6 @@ dh dh2048.pem
 -auth the.key 0
 cipher AES-256-CBC
 
-# Réseau
 server 10.10.10.0 255.255.255.0
 push "redirect-gateway def1 bypass-dhcp"
 push "dhcp-option DNS 208.67.222.222" #OpenDNS pour les serveur DNS
@@ -129,26 +126,26 @@ log-append /var/log/openvpn/openvpn.log #Fchier log" > server.conf
         echo -e "$VERT""# Création de la configuration du client #"
         echo -e "$VERT""##########################################"
         cd /etc/openvpn/confuser/$CLIENT/
-echo "# Client
-OpenVPN $IP TCP-$PORT #Nom du client, aucun impact
+echo "#Client
+client
 dev tun
 proto tcp-client
 remote $IP $PORT
 resolv-retry infinite
 cipher AES-256-CBC
 
-# Clés et certificats
+#Clés et certificats
 ca ca.crt
 cert $CLIENT.crt
 key $CLIENT.key
 tls-auth the.key 1
 
-# Sécurité
+#Sécurité
 nobind
 persist-key
 persist-tun
 comp-lzo #Compression
-verb 3 #Niveau de log" > client.conf
+verb 3 #Niveau de log > client.conf
         cp client.conf client.ovpn
         chmod +r * #On rend les clé lisibles
         zip $CLIENT-vpn.zip * #On zip le tout pour faciliter la récupération de la conf
