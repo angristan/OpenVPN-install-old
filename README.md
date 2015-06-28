@@ -12,8 +12,8 @@ Voici les 3 commandes à rentrer :
 
 `./openvpn-install.sh`
 
-Le script vous permet de faire 3 choses : installer OpenVPN, créer un utilisateur (client) et de désinstaller complètemet OpenVPN.
-La deuxième option ne fonctionne bien évidemment que si vous avez effectué la première.
+Le script vous permet de faire 3 choses : installer OpenVPN, créer un utilisateur (client) et désinstaller complètement OpenVPN. La deuxième option ne fonctionne bien évidemment que si vous avez effectué la première.
+
 Vous pouvez relancer ce script autant de fois que vous le voulez pour créer des utilisateurs.
 
 ###Quel serveur utiliser ?
