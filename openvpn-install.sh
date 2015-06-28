@@ -59,8 +59,7 @@ else
         mkdir /etc/openvpn/confuser
         cd /etc/openvpn
         #On écrit la configuration du serveur
-        cat >> server.conf << "EOF"
-# Serveur
+echo "# Serveur
 mode server
 proto tcp #On utilise TCP
 port $PORT #On utilise le port défini par l'utilisateur
@@ -93,8 +92,7 @@ comp-lzo #Compression
 verb 3 #Niveau de log
 mute 20
 status openvpn-status.log
-log-append /var/log/openvpn/openvpn.log #Fchier log
-EOF
+log-append /var/log/openvpn/openvpn.log #Fchier log" > server.conf
 #Fin de la conf
         mkdir /var/log/openvpn/ #On crée le dossier et fichier de log
         touch /var/log/openvpn/openvpn.log
@@ -131,8 +129,7 @@ EOF
         echo -e "$VERT""# Création de la configuration du client #"
         echo -e "$VERT""##########################################"
         cd /etc/openvpn/confuser/$CLIENT/
-        cat >> client.conf << "EOF"
-# Client
+echo "# Client
 OpenVPN $IP TCP-$PORT #Nom du client, aucun impact
 dev tun
 proto tcp-client
@@ -151,9 +148,7 @@ nobind
 persist-key
 persist-tun
 comp-lzo #Compression
-verb 3 #Niveau de log
-EOF
-#Fin de la conf
+verb 3 #Niveau de log" > client.conf
         cp client.conf client.ovpn
         chmod +r * #On rend les clé lisibles
         zip $CLIENT-vpn.zip * #On zip le tout pour faciliter la récupération de la conf
