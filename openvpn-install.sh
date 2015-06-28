@@ -21,17 +21,17 @@ then
 	echo -e "$ROUGE""TUN/TAP n'est pas activé."
   exit
 else
-  read -p 'IP du serveur : ' IP #On défini les variabes pour la suite
-  read -p 'Port à utiliser pour le VPN : ' PORT
-  echo -e "$BLEU""Généralement, l'interface réseau à utiliser sur un serveur dédié est eth0,"
-  echo -e "$BLEU""et venet0 sur un VPS. Pour en être sûr utilisez la commande ifconfig."
-  read -p 'Interface réseau à utiliser : ' INTERFACE
   PS3='Entrez votre choix: '
-  options=("Installer le serveur OpenVPN" "Créer un utilisateur" "Quiter")
+  options=("Installer le serveur OpenVPN" "Créer un utilisateur" "Désinstaller OpenVPN" "Quiter")
   select opt in "${options[@]}"
   do
-    case $opt in
+    case $opt in #1er CHOIX
       "Installer le serveur OpenVPN")
+        read -p 'IP du serveur : ' IP #On défini les variabes pour la suite
+        read -p 'Port à utiliser pour le VPN : ' PORT
+        echo -e "$BLEU""Généralement, l'interface réseau à utiliser sur un serveur dédié est eth0,"
+        echo -e "$BLEU""et venet0 sur un VPS. Pour en être sûr utilisez la commande ifconfig."
+        read -p 'Interface réseau à utiliser : ' INTERFACE
         echo -e "$VERT""###########################"
         echo -e "$VERT""# Installation de OpenVPN #"
         echo -e "$VERT""###########################"
@@ -111,10 +111,13 @@ EOF
         echo "pre-up iptables-restore < /etc/iptables.rules" >> /etc/network/interfaces
       exit
       ;;
-      "Créer un utilisateur")
+      "Créer un utilisateur") #2ème CHOIX
         echo -e "$BLEU""Un utiisateur ne peut effectuer qu'une connexion à la fois."
         echo -e "$BLEU""Mais vous pouvez créer autant d'utilisateurs que vous voulez,"
         echo -e "$BLEU""et donc avoir autant de connexions simultanées que vous voulez ! :)"
+        echo -e "$ROUGE""L'IP ET LE PORT DOIVENT ÊTRE LES MÊMES QUE DANS LA CONFIGURATION DU SERVEUR"
+        read -p 'IP du serveur : ' IP
+        read -p 'Port à utiliser pour le VPN : ' PORT
         read -p "Nom de l'utilisateur (lettres uniquement) : " CLIENT
         echo -e "$VERT""####################################"
         echo -e "$VERT""# Création des clés et certificats #"
@@ -163,6 +166,21 @@ EOF
         #Si c'est root, la conf sera dans /root
         #Sinon dans /home/$USER/
         exit
+      ;;
+      "Désinstaller OpenVPN")
+        systemctl stop openvpn
+        systemctl disable openvpn
+        rm -rf /etc/openvpn
+        rm ~/*-vpn.zip
+        rm -rf /var/log/openvpn/
+        sed -i 's|net.ipv4.ip_forward=1|#net.ipv4.ip_forward=1|' /etc/sysctl.conf
+        sysctl -p
+        sed -i 's|pre-up iptables-restore < /etc/iptables.rules||' /etc/network/interfaces
+        iptables -F
+        apt-get purge openvpn easy-rsa
+        echo -e "$VERT""######################################################"
+        echo -e "$VERT""# Le serveur OpenVPN a été complètement désinstallé. #"
+        echo -e "$VERT""######################################################"
       ;;
       "Quiter")
         break
