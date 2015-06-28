@@ -60,41 +60,42 @@ else
         cd /etc/openvpn
         #On écrit la configuration du serveur
         cat >> server.conf << "EOF"
-        # Serveur
-        mode server
-        proto tcp #On utilise TCP
-        port $PORT #On utilise le port défini par l'utilisateur
-        dev tun
-        comp-lzo #Compression
+# Serveur
+mode server
+proto tcp #On utilise TCP
+port $PORT #On utilise le port défini par l'utilisateur
+dev tun
+comp-lzo #Compression
 
-        # Clés et certificats
-        ca ca.crt
-        cert server.crt
-        key server.key
-        dh dh2048.pem
-        -auth the.key 0
-        cipher AES-256-CBC
+# Clés et certificats
+ca ca.crt
+cert server.crt
+key server.key
+dh dh2048.pem
+-auth the.key 0
+cipher AES-256-CBC
 
-        # Réseau
-        server 10.10.10.0 255.255.255.0
-        push "redirect-gateway def1 bypass-dhcp"
-        push "dhcp-option DNS 208.67.222.222" #OpenDNS pour les serveur DNS
-        push "dhcp-option DNS 208.67.220.220"
-        keepalive 10 120
+# Réseau
+server 10.10.10.0 255.255.255.0
+push "redirect-gateway def1 bypass-dhcp"
+push "dhcp-option DNS 208.67.222.222" #OpenDNS pour les serveur DNS
+push "dhcp-option DNS 208.67.220.220"
+keepalive 10 120
 
-        # Sécurité
-        user nobody
-        group nogroup
-        chroot /etc/openvpn/jail
-        persist-key
-        persist-tun
+# Sécurité
+user nobody
+group nogroup
+chroot /etc/openvpn/jail
+persist-key
+persist-tun
 
-        # Log
-        verb 3 #Niveau de log
-        mute 20
-        status openvpn-status.log
-        log-append /var/log/openvpn/openvpn.log #Fchier log
+# Log
+verb 3 #Niveau de log
+mute 20
+status openvpn-status.log
+log-append /var/log/openvpn/openvpn.log #Fchier log
 EOF
+#Fin de la conf
         mkdir /var/log/openvpn/ #On crée le dossier et fichier de log
         touch /var/log/openvpn/openvpn.log
         echo -e "$VERT""########################"
@@ -128,27 +129,28 @@ EOF
         echo -e "$VERT""##########################################"
         cd /etc/openvpn/confuser/$CLIENT/
         cat >> client.conf << "EOF"
-        # Client
-        OpenVPN $IP TCP-$PORT #Nom du client, aucun impact
-        dev tun
-        proto tcp-client
-        remote $IP $PORT
-        resolv-retry infinite
-        cipher AES-256-CBC
+# Client
+OpenVPN $IP TCP-$PORT #Nom du client, aucun impact
+dev tun
+proto tcp-client
+remote $IP $PORT
+resolv-retry infinite
+cipher AES-256-CBC
 
-        # Clés et certificats
-        ca ca.crt
-        cert $CLIENT.crt
-        key $CLIENT.key
-        tls-auth the.key 1
+# Clés et certificats
+ca ca.crt
+cert $CLIENT.crt
+key $CLIENT.key
+tls-auth the.key 1
 
-        # Sécurité
-        nobind
-        persist-key
-        persist-tun
-        comp-lzo #Compression
-        verb 3 #Niveau de log
+# Sécurité
+nobind
+persist-key
+persist-tun
+comp-lzo #Compression
+verb 3 #Niveau de log
 EOF
+#Fin de la conf
         cp client.conf client.ovpn
         chmod +r * #On rend les clé lisibles
         zip $CLIENT-vpn.zip * #On zip le tout pour faciliter la récupération de la conf
