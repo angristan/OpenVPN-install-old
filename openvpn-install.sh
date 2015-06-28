@@ -148,7 +148,7 @@ nobind
 persist-key
 persist-tun
 comp-lzo #Compression
-verb 3 #Niveau de log > client.conf
+verb 3 #Niveau de log" > client.conf
         cp client.conf client.ovpn
         chmod +r * #On rend les clé lisibles
         zip $CLIENT-vpn.zip * #On zip le tout pour faciliter la récupération de la conf
