@@ -94,7 +94,7 @@ else
         mute 20
         status openvpn-status.log
         log-append /var/log/openvpn/openvpn.log #Fchier log
-        EOF #Fin de la configuration
+EOF
         mkdir /var/log/openvpn/ #On crée le dossier et fichier de log
         touch /var/log/openvpn/openvpn.log
         echo -e "$VERT""########################"
@@ -148,7 +148,7 @@ else
         persist-tun
         comp-lzo #Compression
         verb 3 #Niveau de log
-        EOF #Fin du fichier de configuration
+EOF
         cp client.conf client.ovpn
         chmod +r * #On rend les clé lisibles
         zip $CLIENT-vpn.zip * #On zip le tout pour faciliter la récupération de la conf
