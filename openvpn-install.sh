@@ -103,7 +103,7 @@ EOF
         echo -e "$VERT""########################"
         systemctl enable openvpn #Activation d'OpenVPn au boot
         service openvpn start #Démarrage du daemon OpenVPN
-        sed -i '/ipv4.ip_forward/s/^#//g' /etc/sysctl.conf
+        sed -i 's|#net.ipv4.ip_forward=1|net.ipv4.ip_forward=1|' /etc/sysctl.conf
         sysctl -p
         #On active la passerelle vers Internet
         iptables -t nat -A POSTROUTING -s 10.10.10.0/24 -o $INTERFACE -j MASQUERADE
