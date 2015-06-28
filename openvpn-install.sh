@@ -109,7 +109,7 @@ EOF
         iptables -t nat -A POSTROUTING -s 10.10.10.0/24 -o $INTERFACE -j MASQUERADE
         sh -c "iptables-save > /etc/iptables.rules" #On sauve les règles iptables en cas de reboot
         echo "pre-up iptables-restore < /etc/iptables.rules" >> /etc/network/interfaces
-      exit
+      break
       ;;
       "Créer un utilisateur") #2ème CHOIX
         echo -e "$BLEU""Un utiisateur ne peut effectuer qu'une connexion à la fois."
@@ -165,7 +165,7 @@ EOF
         #La variable $USER pointe sur l'utilisateur actuel.
         #Si c'est root, la conf sera dans /root
         #Sinon dans /home/$USER/
-        exit
+        break
       ;;
       "Désinstaller OpenVPN")
         systemctl stop openvpn
@@ -181,6 +181,7 @@ EOF
         echo -e "$VERT""######################################################"
         echo -e "$VERT""# Le serveur OpenVPN a été complètement désinstallé. #"
         echo -e "$VERT""######################################################"
+        break
       ;;
       "Quiter")
         break
