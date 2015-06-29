@@ -27,11 +27,11 @@ else
   do
     case $opt in #1er CHOIX
       "Installer le serveur OpenVPN")
-        read -p 'IP du serveur : ' IP #On défini les variabes pour la suite
         read -p 'Port à utiliser pour le VPN : ' PORT
         echo -e "$BLEU""Généralement, l'interface réseau à utiliser sur un serveur dédié est eth0,"
         echo -e "$BLEU""et venet0 sur un VPS. Pour en être sûr utilisez la commande ifconfig."
         read -p 'Interface réseau à utiliser : ' INTERFACE
+        IP=`dig +short myip.opendns.com @resolver1.opendns.com` #On récupère l'IP publique
         echo -e "$VERT""###########################"
         echo -e "$VERT""# Installation de OpenVPN #"
         echo -e "$VERT""###########################"
@@ -114,9 +114,9 @@ log-append /var/log/openvpn/openvpn.log #Fchier log" > server.conf
         echo -e "$BLEU""Mais vous pouvez créer autant d'utilisateurs que vous voulez,"
         echo -e "$BLEU""et donc avoir autant de connexions simultanées que vous voulez ! :)"
         echo -e "$ROUGE""L'IP ET LE PORT DOIVENT ÊTRE LES MÊMES QUE DANS LA CONFIGURATION DU SERVEUR"
-        read -p 'IP du serveur : ' IP
         read -p 'Port à utiliser pour le VPN : ' PORT
         read -p "Nom de l'utilisateur (pas de caractères scpéciaux) : " CLIENT
+        IP=`dig +short myip.opendns.com @resolver1.opendns.com` #On récupère l'IP publique
         echo -e "$VERT""####################################"
         echo -e "$VERT""# Création des clés et certificats #"
         echo -e "$VERT""####################################"
