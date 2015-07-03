@@ -31,11 +31,11 @@ else
         echo -e "$BLEU""Généralement, l'interface réseau à utiliser sur un serveur dédié est eth0,"
         echo -e "$BLEU""et venet0 sur un VPS. Pour en être sûr utilisez la commande ifconfig."
         read -p 'Interface réseau à utiliser : ' INTERFACE
-        IP=`dig +short myip.opendns.com @resolver1.opendns.com` #On récupère l'IP publique
         echo -e "$VERT""###########################"
         echo -e "$VERT""# Installation de OpenVPN #"
         echo -e "$VERT""###########################"
-        apt-get -y install openvpn easy-rsa zip
+        apt-get -y install openvpn easy-rsa zip dnsutils
+        IP=`dig +short myip.opendns.com @resolver1.opendns.com` #On récupère l'IP publique
         echo -e "$VERT""##################################"
         echo -e "$VERT""# Création des clés/certificatst #"
         echo -e "$VERT""##################################"
