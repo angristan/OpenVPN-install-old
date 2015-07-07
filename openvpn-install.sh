@@ -152,14 +152,10 @@ verb 3 #Niveau de log" > client.conf
         cp client.conf client.ovpn
         chmod +r * #On rend les clé lisibles
         zip $CLIENT-vpn.zip * #On zip le tout pour faciliter la récupération de la conf
-        cd
-        cp /etc/openvpn/confuser/$CLIENT/$CLIENT-vpn.zip ~/ #Copie dans le répertoire de l'utilisateur
+        chmod +r $CLIENT-vpn.zip
         echo -e "$VERT""La configuration client se trouve dans $PWD/$CLIENT-vpn.zip"
-        echo -e "$VERT"'Pour récuprer le fichier de configuration, vous pouvez utiliser cette commande sur votre PC: '
-        echo -e "$JAUNE"'scp' "$USER@$IP:$CLIENT-vpn.zip $CLIENT-vpn.zip"
-        #La variable $USER pointe sur l'utilisateur actuel.
-        #Si c'est root, la conf sera dans /root
-        #Sinon dans /home/$USER/
+        echo -e "$VERT"'Pour récuprer le fichier de configuration, vous pouvez utiliser cette commande sur votre PC (GNU/Linux/OSX): '
+        echo -e "$JAUNE"'scp' "utilisateurSSH@$IP:/etc/openvpn/confuser/$CLIENT/$CLIENT-vpn.zip $CLIENT-vpn.zip"
         break
       ;;
       "Désinstaller OpenVPN")
