@@ -8,7 +8,7 @@ BLEU="\\033[1;34m"
 echo -e "${BLEU}""###########################################################################"
 echo -e "$BLEU""#                                                                         #"
 echo -e "$BLEU""#  ""$JAUNE""Ce script bash installe un serveur OpenVPN sur Debian 8 uniquement""$BLEU""     #"
-echo -e "$BLEU""# ""$JAUNE""Le serveur utilisera le protocole TCP sur le port 443 ainsi que OpenDNS""$BLEU"" #"
+echo -e "$BLEU""# ""$JAUNE""Le serveur utilisera le protocole TCP sur le port 443                  ""$BLEU"" #"
 echo -e "$BLEU""#                                                                         #"
 echo -e "$BLEU""###########################################################################"
 
@@ -76,8 +76,8 @@ cipher AES-256-CBC
 #Réseau
 server 10.10.10.0 255.255.255.0
 push "redirect-gateway def1 bypass-dhcp"
-push "dhcp-option DNS 208.67.222.222" #OpenDNS pour les serveur DNS
-push "dhcp-option DNS 208.67.220.220"
+push "dhcp-option DNS 80.67.169.12" #On utilise les DNS de la FDN
+push "dhcp-option DNS 80.67.169.40"
 keepalive 10 120
 
 #Sécurité
