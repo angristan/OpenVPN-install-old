@@ -28,9 +28,6 @@ else
     case $opt in #1er CHOIX
       "Installer le serveur OpenVPN")
         read -p 'Port à utiliser pour le VPN : ' PORT
-        echo -e "$BLEU""Généralement, l'interface réseau à utiliser sur un serveur dédié est eth0,"
-        echo -e "$BLEU""et venet0 sur un VPS. Pour en être sûr utilisez la commande ifconfig."
-        read -p 'Interface réseau à utiliser : ' INTERFACE
         echo -e "$VERT""###########################"
         echo -e "$VERT""# Installation de OpenVPN #"
         echo -e "$VERT""###########################"
@@ -104,7 +101,8 @@ log-append /var/log/openvpn/openvpn.log #Fchier log" > server.conf
         sed -i 's|#net.ipv4.ip_forward=1|net.ipv4.ip_forward=1|' /etc/sysctl.conf
         sysctl -p
         #On active la passerelle vers Internet
-        iptables -t nat -A POSTROUTING -s 10.10.10.0/24 -o $INTERFACE -j MASQUERADE
+        iptables -t nat -A POSTROUTING -s 10.10.10.0/24 -o eth0 -j MASQUERADE
+        iptables -t nat -A POSTROUTING -s 10.10.10.0/24 -o venet0 -j MASQUERADE
         sh -c "iptables-save > /etc/iptables.rules" #On sauve les règles iptables en cas de reboot
         echo "pre-up iptables-restore < /etc/iptables.rules" >> /etc/network/interfaces
       break
