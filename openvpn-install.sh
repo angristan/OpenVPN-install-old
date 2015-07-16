@@ -108,7 +108,7 @@ log-append /var/log/openvpn/openvpn.log #Fchier log" > server.conf
       break
       ;;
       "Créer un utilisateur") #2ème CHOIX
-      	if [ -e /etc/openvpn/server.conf ]
+      	if [ -e /etc/openvpn/server.conf ] #On vérifie que le serveur a été installé
       		then
 		        echo -e "$BLEU""Un utiisateur ne peut effectuer qu'une connexion à la fois."
 		        echo -e "$BLEU""Mais vous pouvez créer autant d'utilisateurs que vous voulez,"
@@ -157,7 +157,7 @@ verb 3 #Niveau de log" > client.conf
 		        echo -e "$VERT"'Pour récuprer le fichier de configuration, vous pouvez utiliser cette commande sur votre PC (GNU/Linux/OSX): '
 		        echo -e "$JAUNE"'scp' "utilisateurSSH@$IP:/etc/openvpn/confuser/$CLIENT/$CLIENT-vpn.zip $CLIENT-vpn.zip"
 		        break
-		    else
+		    else #Si le serveur n'a pas été installé
 		    	echo -e "$ROUGE""Vous devez installez le serveur avant de créer des utilisateurs."
 		    	break
 		    fi
