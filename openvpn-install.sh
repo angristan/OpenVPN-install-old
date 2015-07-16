@@ -108,25 +108,27 @@ log-append /var/log/openvpn/openvpn.log #Fchier log" > server.conf
       break
       ;;
       "Créer un utilisateur") #2ème CHOIX
-        echo -e "$BLEU""Un utiisateur ne peut effectuer qu'une connexion à la fois."
-        echo -e "$BLEU""Mais vous pouvez créer autant d'utilisateurs que vous voulez,"
-        echo -e "$BLEU""et donc avoir autant de connexions simultanées que vous voulez ! :)"
-        echo -e "$ROUGE""L'IP ET LE PORT DOIVENT ÊTRE LES MÊMES QUE DANS LA CONFIGURATION DU SERVEUR"
-        read -p 'Port à utiliser pour le VPN : ' PORT
-        read -p "Nom de l'utilisateur (pas de caractères scpéciaux) : " CLIENT
-        IP=`dig +short myip.opendns.com @resolver1.opendns.com` #On récupère l'IP publique
-        echo -e "$VERT""####################################"
-        echo -e "$VERT""# Création des clés et certificats #"
-        echo -e "$VERT""####################################"
-        cd /etc/openvpn/easy-rsa
-        source vars
-        ./build-key-pass $CLIENT
-        mkdir /etc/openvpn/confuser/$CLIENT
-        cp keys/$CLIENT*.* keys/the.key keys/ca.crt /etc/openvpn/confuser/$CLIENT/
-        echo -e "$VERT""##########################################"
-        echo -e "$VERT""# Création de la configuration du client #"
-        echo -e "$VERT""##########################################"
-        cd /etc/openvpn/confuser/$CLIENT/
+      	if [ -e /etc/openvpn/server.conf ]
+      		then
+		        echo -e "$BLEU""Un utiisateur ne peut effectuer qu'une connexion à la fois."
+		        echo -e "$BLEU""Mais vous pouvez créer autant d'utilisateurs que vous voulez,"
+		        echo -e "$BLEU""et donc avoir autant de connexions simultanées que vous voulez ! :)"
+		        echo -e "$ROUGE""L'IP ET LE PORT DOIVENT ÊTRE LES MÊMES QUE DANS LA CONFIGURATION DU SERVEUR"
+		        read -p 'Port à utiliser pour le VPN : ' PORT
+		        read -p "Nom de l'utilisateur (pas de caractères scpéciaux) : " CLIENT
+		        IP=`dig +short myip.opendns.com @resolver1.opendns.com` #On récupère l'IP publique
+		        echo -e "$VERT""####################################"
+		        echo -e "$VERT""# Création des clés et certificats #"
+		        echo -e "$VERT""####################################"
+		        cd /etc/openvpn/easy-rsa
+		        source vars
+		        ./build-key-pass $CLIENT
+		        mkdir /etc/openvpn/confuser/$CLIENT
+		        cp keys/$CLIENT*.* keys/the.key keys/ca.crt /etc/openvpn/confuser/$CLIENT/
+		        echo -e "$VERT""##########################################"
+		        echo -e "$VERT""# Création de la configuration du client #"
+		        echo -e "$VERT""##########################################"
+		        cd /etc/openvpn/confuser/$CLIENT/
 echo "#Client
 client
 dev tun
@@ -147,14 +149,18 @@ persist-key
 persist-tun
 comp-lzo #Compression
 verb 3 #Niveau de log" > client.conf
-        cp client.conf client.ovpn
-        chmod +r * #On rend les clé lisibles
-        zip $CLIENT-vpn.zip * #On zip le tout pour faciliter la récupération de la conf
-        chmod +r $CLIENT-vpn.zip
-        echo -e "$VERT""La configuration client se trouve dans $PWD/$CLIENT-vpn.zip"
-        echo -e "$VERT"'Pour récuprer le fichier de configuration, vous pouvez utiliser cette commande sur votre PC (GNU/Linux/OSX): '
-        echo -e "$JAUNE"'scp' "utilisateurSSH@$IP:/etc/openvpn/confuser/$CLIENT/$CLIENT-vpn.zip $CLIENT-vpn.zip"
-        break
+		        cp client.conf client.ovpn
+		        chmod +r * #On rend les clé lisibles
+		        zip $CLIENT-vpn.zip * #On zip le tout pour faciliter la récupération de la conf
+		        chmod +r $CLIENT-vpn.zip
+		        echo -e "$VERT""La configuration client se trouve dans $PWD/$CLIENT-vpn.zip"
+		        echo -e "$VERT"'Pour récuprer le fichier de configuration, vous pouvez utiliser cette commande sur votre PC (GNU/Linux/OSX): '
+		        echo -e "$JAUNE"'scp' "utilisateurSSH@$IP:/etc/openvpn/confuser/$CLIENT/$CLIENT-vpn.zip $CLIENT-vpn.zip"
+		        break
+		    else
+		    	echo -e "$ROUGE""Vous devez installez le serveur avant de créer des utilisateurs."
+		    	break
+		    fi
       ;;
       "Désinstaller OpenVPN")
         systemctl stop openvpn
