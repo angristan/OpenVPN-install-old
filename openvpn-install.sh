@@ -114,7 +114,7 @@ log-append /var/log/openvpn/openvpn.log #Fchier log" > server.conf
 		        echo -e "$BLEU""Mais vous pouvez créer autant d'utilisateurs que vous voulez,"
 		        echo -e "$BLEU""et donc avoir autant de connexions simultanées que vous voulez ! :)"
 		        read -p "Nom de l'utilisateur (pas de caractères scpéciaux) : " CLIENT
-		        PORT=`cat /etc/openvpn/server.conf | grep port | awk '{print $2}'`
+		        PORT=`grep port /etc/openvpn/server.conf | awk '{print $2}'`
 		        IP=`dig +short myip.opendns.com @resolver1.opendns.com` #On récupère l'IP publique
 		        echo -e "$VERT""####################################"
 		        echo -e "$VERT""# Création des clés et certificats #"
