@@ -181,7 +181,7 @@ verb 3 #Niveau de log" > client.conf
         break
       ;;
       *)
-        echo Choix invalide.;;
+        echo "Choix invalide.";;
     esac
   done
 fi
