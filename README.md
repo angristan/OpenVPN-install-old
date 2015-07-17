@@ -26,6 +26,6 @@ Ce script marchera sur :
 
 http://angristan.fr/contact/
 
-## License
+## Licence
 
 [GNU GPL v2.0](https://github.com/Angristan/OpenVPN-install/blob/master/LICENSE)
