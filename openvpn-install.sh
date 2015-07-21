@@ -110,7 +110,7 @@ log-append /var/log/openvpn/openvpn.log #Fchier log" > server.conf
         echo -e "$VERT""# Configuration réseau #"
         echo -e "$VERT""########################"
         systemctl enable openvpn #Activation d'OpenVPn au boot
-        service openvpn start #Démarrage du daemon OpenVPN
+        service openvpn restart #Démarrage du daemon OpenVPN
         sed -i 's|#net.ipv4.ip_forward=1|net.ipv4.ip_forward=1|' /etc/sysctl.conf
         sysctl -p
         #On active la passerelle vers Internet
