@@ -16,6 +16,10 @@ Le script vous permet de faire 3 choses : installer OpenVPN, créer un utilisate
 
 Vous pouvez relancer ce script autant de fois que vous le voulez pour créer des utilisateurs.
 
+Le script supporte actuellement 2 interfaces réseau : eth0 et venet0. Si vous en utilisez une autre, merci de me contacter.
+
+Le script ajoute des règles au firewall (iptables). Si vous en utilisez déjà, ou que vous les ajoutez au démarrage de votre serveur, modifiez le script pour enlever la partie iptables, et ajoutez la règle vous même.
+
 ## Quel serveur utiliser ?
 Ce script marchera sur :
 - Serveur dédié
