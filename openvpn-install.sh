@@ -27,12 +27,25 @@ else
   do
     case $opt in #1er CHOIX
       "Installer le serveur OpenVPN")
+        INT_eth0=`ifconfig | grep "eth0" | awk '{print $1}'`
+        INT_venet0=`ifconfig | grep "venet0:0" | awk '{print $1}'`
+        if [[ -n "$INT_eth0" ]] && [[ $INT_eth0 = "eth0" ]]
+        then
+          INTERFACE="eth0"
+        elif [[ -n "$INT_venet0" ]] && [[ $INT_venet0 = "venet0:0" ]]
+        then
+          INTERFACE="venet0"
+        else
+          echo "Votre interface réseau n'est pas supportée."
+          echo "Merci de contacter Angristan :)"
+          break
+        fi
         read -p 'Port à utiliser pour le VPN : ' PORT
+        IP=`dig +short myip.opendns.com @resolver1.opendns.com` #On récupère l'IP publique
         echo -e "$VERT""###########################"
         echo -e "$VERT""# Installation de OpenVPN #"
         echo -e "$VERT""###########################"
         apt-get -y install openvpn easy-rsa zip dnsutils
-        IP=`dig +short myip.opendns.com @resolver1.opendns.com` #On récupère l'IP publique
         echo -e "$VERT""##################################"
         echo -e "$VERT""# Création des clés/certificatst #"
         echo -e "$VERT""##################################"
@@ -101,8 +114,7 @@ log-append /var/log/openvpn/openvpn.log #Fchier log" > server.conf
         sed -i 's|#net.ipv4.ip_forward=1|net.ipv4.ip_forward=1|' /etc/sysctl.conf
         sysctl -p
         #On active la passerelle vers Internet
-        iptables -t nat -A POSTROUTING -s 10.10.10.0/24 -o eth0 -j MASQUERADE
-        iptables -t nat -A POSTROUTING -s 10.10.10.0/24 -o venet0 -j MASQUERADE
+        iptables -t nat -A POSTROUTING -s 10.10.10.0/24 -o $INTERFACE -j MASQUERADE
         sh -c "iptables-save > /etc/iptables.rules" #On sauve les règles iptables en cas de reboot
         echo "pre-up iptables-restore < /etc/iptables.rules" >> /etc/network/interfaces
       break
