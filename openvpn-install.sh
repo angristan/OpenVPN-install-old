@@ -4,6 +4,7 @@ ROUGE="\\033[1;31m"
 VERT="\\033[1;32m"
 JAUNE="\\033[1;33m"
 BLEU="\\033[1;34m"
+BLANC="\\033[1;37m"
 
 echo -e "${BLEU}""###########################################################################"
 echo -e "$BLEU""#                                                                         #"
@@ -117,6 +118,7 @@ log-append /var/log/openvpn/openvpn.log #Fchier log" > server.conf
         iptables -t nat -A POSTROUTING -s 10.10.10.0/24 -o $INTERFACE -j MASQUERADE
         sh -c "iptables-save > /etc/iptables.rules" #On sauve les règles iptables en cas de reboot
         echo "pre-up iptables-restore < /etc/iptables.rules" >> /etc/network/interfaces
+        echo -e "$BLANC"" "
       break
       ;;
       "Créer un utilisateur") #2ème CHOIX
@@ -167,6 +169,8 @@ verb 3 #Niveau de log" > client.conf
 		        echo -e "$VERT""La configuration client se trouve dans $PWD/$CLIENT-vpn.zip"
 		        echo -e "$VERT"'Pour récuprer le fichier de configuration, vous pouvez utiliser cette commande sur votre PC (GNU/Linux/OSX): '
 		        echo -e "$JAUNE"'scp' "utilisateurSSH@$IP:/etc/openvpn/confuser/$CLIENT/$CLIENT-vpn.zip $CLIENT-vpn.zip"
+		        echo -e "$JAUNE""Ou encore par SFTP ou FTP."
+		        echo -e "$BLANC"" "
 		        break
 		    else #Si le serveur n'a pas été installé
 		    	echo -e "$ROUGE""Vous devez installez le serveur avant de créer des utilisateurs."
@@ -187,6 +191,7 @@ verb 3 #Niveau de log" > client.conf
         echo -e "$VERT""######################################################"
         echo -e "$VERT""# Le serveur OpenVPN a été complètement désinstallé. #"
         echo -e "$VERT""######################################################"
+        echo -e "$BLANC"" "
         break
       ;;
       "Quiter")
