@@ -167,8 +167,8 @@ verb 3 #Niveau de log" > client.conf
 		        zip $CLIENT-vpn.zip * #On zip le tout pour faciliter la récupération de la conf
 		        chmod +r $CLIENT-vpn.zip
 		        echo -e "$VERT""La configuration client se trouve dans $PWD/$CLIENT-vpn.zip"
-		        echo -e "$VERT"'Pour récuprer le fichier de configuration, vous pouvez utiliser cette commande sur votre PC (GNU/Linux/OSX): '
-		        echo -e "$JAUNE"'scp' "utilisateurSSH@$IP:/etc/openvpn/confuser/$CLIENT/$CLIENT-vpn.zip $CLIENT-vpn.zip"
+		        echo -e "$VERT""Pour récuprer le fichier de configuration, vous pouvez utiliser cette commande sur votre PC (GNU/Linux/OSX): "
+		        echo -e "$JAUNE""scp utilisateurSSH@$IP:/etc/openvpn/confuser/$CLIENT/$CLIENT-vpn.zip $CLIENT-vpn.zip"
 		        echo -e "$JAUNE""Ou encore par SFTP ou FTP."
 		        echo -e "$BLANC"" "
 		        break
