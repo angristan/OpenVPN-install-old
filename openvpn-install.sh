@@ -1,33 +1,34 @@
 #!/bin/bash
-#Définition des variables de coloration
-ROUGE="\033[1;31m"
-VERT="\033[1;32m"
-JAUNE="\033[1;33m"
-BLEU="\033[1;34m"
+#Coloration variables
+RED="\033[1;31m"
+GREEN="\033[1;32m"
+YELLOW="\033[1;33m"
+BLUE="\033[1;34m"
 DEFAULT="\033[0m"
 
-echo -e "$BLEU""###########################################################################"
-echo -e "$BLEU""#                                                                         #"
-echo -e "$BLEU""#  ""$JAUNE""Ce script bash installe un serveur OpenVPN sur Debian 8 uniquement""$BLEU""     #"
-echo -e "$BLEU""#  ""$JAUNE""Le serveur utilisera le protocole TCP sur le port de votre choix      ""$BLEU"" #"
-echo -e "$BLEU""#                                                                         #"
-echo -e "$BLEU""###########################################################################""$DEFAULT"
+echo -e "$BLUE""###########################################################################"
+echo -e "$BLUE""#                                                                         #"
+echo -e "$BLUE""#  ""$YELLOW""This script will install an OpenVPN server on Debian 8 only.            ""$BLUE""#"
+echo -e "$BLUE""#  ""$YELLOW""The server will use the TCP protocol on the port of your choice,        ""$BLUE""#"
+echo -e "$BLUE""#  ""$YELLOW""and will also use the French Data Network's (FDN) DNS servers.          ""$BLUE""#"
+echo -e "$BLUE""#                                                                         #"
+echo -e "$BLUE""###########################################################################""$DEFAULT"
 
-if [ "$UID" -ne "0" ] #On vérifie les droits
+if [ "$UID" -ne "0" ] #We check the user
 then
-   echo -e "$ROUGE""Veuillez exécuter ce script en tant que root.""$DEFAULT"
+   echo -e "$RED""Please use this script as root.""$DEFAULT"
    exit
-elif [[ ! -e /dev/net/tun ]] #On vérifie que le module TUN est activé
+elif [[ ! -e /dev/net/tun ]] #We check that the TUN module is activated
 then
-	echo -e "$ROUGE""TUN/TAP n'est pas activé.""$DEFAULT"
+  echo -e "$RED""TUN/TAP is not activated.""$DEFAULT"
   exit
 else
-  PS3='Entrez votre choix: '
-  options=("Installer le serveur OpenVPN" "Créer un utilisateur" "Désinstaller OpenVPN" "Quitter")
+  PS3='Enter your choice : '
+  options=("Install the OpenVPN server" "Create a user" "Uninstall OpenVPN" "Exit")
   select opt in "${options[@]}"
   do
-    case $opt in #1er CHOIX
-      "Installer le serveur OpenVPN")
+    case $opt in #1st choice
+      "Install the OpenVPN server")
         INT_eth0=`ifconfig | grep "eth0" | awk '{print $1}'`
         INT_venet0=`ifconfig | grep "venet0:0" | awk '{print $1}'`
         if [[ -n "$INT_eth0" ]] && [[ $INT_eth0 = "eth0" ]]
@@ -37,19 +38,19 @@ else
         then
           INTERFACE="venet0"
         else
-          echo -e "$ROUGE""Votre interface réseau n'est pas supportée."
-          echo -e "$ROUGE""Merci de contacter Angristan :)""$DEFAULT"
+          echo -e "$RED""Your network interface is not supported."
+          echo -e "$RED""Please contact Angristan ;)""$DEFAULT"
           break
         fi
-        read -p 'Port à utiliser pour le VPN : ' PORT
-        IP=`dig +short myip.opendns.com @resolver1.opendns.com` #On récupère l'IP publique
-        echo -e "$VERT""###########################"
-        echo -e "$VERT""# Installation de OpenVPN #"
-        echo -e "$VERT""###########################""$DEFAULT"
+        read -p 'Port to use with the VPN: ' PORT
+        IP=`dig +short myip.opendns.com @resolver1.opendns.com` #We get the public IP of the server
+        echo -e "$GREEN""###########################"
+        echo -e "$GREEN""# Installation of OpenVPN #"
+        echo -e "$GREEN""###########################""$DEFAULT"
         apt-get -y install openvpn easy-rsa zip dnsutils
-        echo -e "$VERT""##################################"
-        echo -e "$VERT""# Création des clés/certificatst #"
-        echo -e "$VERT""##################################""$DEFAULT"
+        echo -e "$GREEN""###################################"
+        echo -e "$GREEN""#  Keys and certificates creation #"
+        echo -e "$GREEN""###################################""$DEFAULT"
         cd /etc/openvpn/
         mkdir easy-rsa
         cp -R /usr/share/easy-rsa/* easy-rsa/
@@ -62,14 +63,13 @@ else
         openvpn --genkey --secret keys/the.key
         cd /etc/openvpn/easy-rsa/keys
         cp ca.crt dh2048.pem server.crt server.key the.key ../../
-        echo -e "$VERT""########################################"
-        echo -e "$VERT""# Création de la configuration serveur #"
-        echo -e "$VERT""########################################""$DEFAULT"
+        echo -e "$GREEN""##########################################"
+        echo -e "$GREEN""# Creation of the server's configuration #"
+        echo -e "$GREEN""##########################################""$DEFAULT"
         mkdir /etc/openvpn/jail
         mkdir /etc/openvpn/jail//tmp
         mkdir /etc/openvpn/confuser
         cd /etc/openvpn
-        #On écrit la configuration du serveur
 echo "#Serveur
 mode server
 proto tcp
@@ -87,7 +87,7 @@ cipher AES-256-CBC
 #Réseau
 server 10.10.10.0 255.255.255.0
 push "redirect-gateway def1 bypass-dhcp"
-push "dhcp-option DNS 80.67.169.12" #On utilise les DNS de la FDN
+push "dhcp-option DNS 80.67.169.12" #French Data Network's (FDN) DNS servers
 push "dhcp-option DNS 80.67.169.40"
 keepalive 10 120
 
@@ -100,47 +100,46 @@ persist-tun
 comp-lzo #Compression
 
 #Log
-verb 3 #Niveau de log
+verb 3 #Log level
 mute 20
 status openvpn-status.log
 log-append /var/log/openvpn/openvpn.log #Fchier log" > server.conf
-#Fin de la conf
-        mkdir /var/log/openvpn/ #On crée le dossier et fichier de log
+#End of conf
+        mkdir /var/log/openvpn/ #We create the log folder and file
         touch /var/log/openvpn/openvpn.log
-        echo -e "$VERT""########################"
-        echo -e "$VERT""# Configuration réseau #"
-        echo -e "$VERT""########################""$DEFAULT"
-        systemctl enable openvpn #Activation d'OpenVPn au boot
-        service openvpn restart #Démarrage du daemon OpenVPN
+        echo -e "$GREEN""#########################"
+        echo -e "$GREEN""# Network configuration #"
+        echo -e "$GREEN""#########################""$DEFAULT"
+        systemctl enable openvpn #Autostart of OpenVPN server's daemon activation
+        service openvpn restart #We start the OpenVPN server's daemon
         sed -i 's|#net.ipv4.ip_forward=1|net.ipv4.ip_forward=1|' /etc/sysctl.conf
         sysctl -p
-        #On active la passerelle vers Internet
         iptables -t nat -A POSTROUTING -s 10.10.10.0/24 -o $INTERFACE -j MASQUERADE
-        sh -c "iptables-save > /etc/iptables.rules" #On sauve les règles iptables en cas de reboot
+        sh -c "iptables-save > /etc/iptables.rules" #Saving iptables rules in case of reboot
         echo "pre-up iptables-restore < /etc/iptables.rules" >> /etc/network/interfaces
       break
       ;;
-      "Créer un utilisateur") #2ème CHOIX
-      	if [ -e /etc/openvpn/server.conf ] #On vérifie que le serveur a été installé
-      		then
-		        echo -e "$BLEU""Un utiisateur ne peut effectuer qu'une connexion à la fois."
-		        echo -e "$BLEU""Mais vous pouvez créer autant d'utilisateurs que vous voulez,"
-		        echo -e "$BLEU""et donc avoir autant de connexions simultanées que vous voulez ! :)""$DEFAULT"
-		        read -p "Nom de l'utilisateur (pas de caractères scpéciaux) : " CLIENT
-		        PORT=`grep port /etc/openvpn/server.conf | awk '{print $2}'`
-		        IP=`dig +short myip.opendns.com @resolver1.opendns.com` #On récupère l'IP publique
-		        echo -e "$VERT""####################################"
-		        echo -e "$VERT""# Création des clés et certificats #"
-		        echo -e "$VERT""####################################""$DEFAULT"
-		        cd /etc/openvpn/easy-rsa
-		        source vars
-		        ./build-key-pass $CLIENT
-		        mkdir /etc/openvpn/confuser/$CLIENT
-		        cp keys/$CLIENT*.* keys/the.key keys/ca.crt /etc/openvpn/confuser/$CLIENT/
-		        echo -e "$VERT""##########################################"
-		        echo -e "$VERT""# Création de la configuration du client #"
-		        echo -e "$VERT""##########################################""$DEFAULT"
-		        cd /etc/openvpn/confuser/$CLIENT/
+      "Create a user") #2nd choice
+        if [ -e /etc/openvpn/server.conf ] #We verify that the server has been installed
+          then
+            echo -e "$BLUE""A user is able to do only one connection at the same time."
+            echo -e "$BLUE""But you can create unlimited users !"
+            echo -e "$BLUE""So you can have unlimited simultaneous connections :)""$DEFAULT"
+            read -p "Username (no special characters) : " CLIENT
+            PORT=`grep port /etc/openvpn/server.conf | awk '{print $2}'`
+            IP=`dig +short myip.opendns.com @resolver1.opendns.com` #We get the public IP adress
+            echo -e "$GREEN""###################################"
+            echo -e "$GREEN""#  Keys and certificates creation #"
+            echo -e "$GREEN""###################################""$DEFAULT"
+            cd /etc/openvpn/easy-rsa
+            source vars
+            ./build-key-pass $CLIENT
+            mkdir /etc/openvpn/confuser/$CLIENT
+            cp keys/$CLIENT*.* keys/the.key keys/ca.crt /etc/openvpn/confuser/$CLIENT/
+            echo -e "$GREEN""########################################"
+            echo -e "$GREEN""# Creation of the user's configuration #"
+            echo -e "$GREEN""########################################""$DEFAULT"
+            cd /etc/openvpn/confuser/$CLIENT/
 echo "#Client
 client
 dev tun
@@ -160,22 +159,22 @@ nobind
 persist-key
 persist-tun
 comp-lzo #Compression
-verb 3 #Niveau de log" > client.conf
-		        cp client.conf client.ovpn
-		        chmod +r * #On rend les clé lisibles
-		        zip $CLIENT-vpn.zip * #On zip le tout pour faciliter la récupération de la conf
-		        chmod +r $CLIENT-vpn.zip
-		        echo -e "$VERT""La configuration client se trouve dans $PWD/$CLIENT-vpn.zip"
-		        echo -e "$VERT""Pour récuprer le fichier de configuration, vous pouvez utiliser cette commande sur votre PC (Linux/OSX): "
-		        echo -e "$JAUNE""scp utilisateurSSH@$IP:/etc/openvpn/confuser/$CLIENT/$CLIENT-vpn.zip $CLIENT-vpn.zip"
-		        echo -e "$JAUNE""Vous pouvez également télécharger le fichier via SFTP ou FTP.""$DEFAULT"
-		        break
-		    else #Si le serveur n'a pas été installé
-		    	echo -e "$ROUGE""Vous devez installez le serveur avant de créer des utilisateurs.""$DEFAULT"
-		    	break
-		    fi
+verb 3 #Log level" > client.conf
+            cp client.conf client.ovpn
+            chmod +r * #We make the keys readable
+            zip $CLIENT-vpn.zip * #We put all the configuration in a zip file
+            chmod +r $CLIENT-vpn.zip
+            echo -e "$GREEN""The client configuration can be found in $PWD/$CLIENT-vpn.zip"
+            echo -e "$GREEN""To get this file, you can use this command on your computer (Linux/OSX) : "
+            echo -e "$YELLOW""scp SSHuser@$IP:/etc/openvpn/confuser/$CLIENT/$CLIENT-vpn.zip $CLIENT-vpn.zip"
+            echo -e "$YELLOW""You can also download the file via SFTP.""$DEFAULT"
+            break
+        else #If the server is not installed
+          echo -e "$RED""You must install the server before creating users.""$DEFAULT"
+          break
+        fi
       ;;
-      "Désinstaller OpenVPN")
+      "Uninstall OpenVPN") #3rd choice
         systemctl stop openvpn
         systemctl disable openvpn
         rm -rf /etc/openvpn
@@ -186,16 +185,16 @@ verb 3 #Niveau de log" > client.conf
         sed -i 's|pre-up iptables-restore < /etc/iptables.rules||' /etc/network/interfaces
         iptables -F
         apt-get autoremove --purge openvpn easy-rsa -y
-        echo -e "$VERT""######################################################"
-        echo -e "$VERT""# Le serveur OpenVPN a été complètement désinstallé. #"
-        echo -e "$VERT""######################################################""$DEFAULT"
+        echo -e "$GREEN""########################################################"
+        echo -e "$GREEN""# The OpenVPN server has been successfully uninstalled #"
+        echo -e "$GREEN""########################################################""$DEFAULT"
         break
       ;;
-      "Quitter")
+      "Exit") #4rth choice
         break
       ;;
       *)
-        echo "Choix invalide.";;
+        echo "Invalid choice.";;
     esac
   done
 fi
