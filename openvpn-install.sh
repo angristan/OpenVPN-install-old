@@ -43,7 +43,7 @@ else
           break
         fi
         read -p 'Port to use with the VPN: ' PORT
-        PS3='Do you want to enable server's logging ?
+        PS3='Do you want to enable server\'s logging ?
         choices=("Yes" "No")
         select opt in "${choices[@]}"
         do
