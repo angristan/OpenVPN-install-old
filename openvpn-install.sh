@@ -43,7 +43,7 @@ else
           break
         fi
         read -p 'Port to use with the VPN: ' PORT
-        if [ $log!="yes" && $log!="no" ]
+        if [[ $log!="yes" && $log!="no" ]]
         then
           read -p "Do you want to enable server logging ? (yes/no)" log
         fi
