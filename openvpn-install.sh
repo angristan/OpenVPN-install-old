@@ -41,7 +41,7 @@ else
         else
           echo -e "$ROUGE""Votre interface réseau n'est pas supportée."
           echo -e "$ROUGE""Merci de contacter Angristan :)"
-					echo -e "$BLANC"" "
+		echo -e "$BLANC"" "
           break
         fi
         read -p 'Port à utiliser pour le VPN : ' PORT
@@ -49,12 +49,12 @@ else
         echo -e "$VERT""###########################"
         echo -e "$VERT""# Installation de OpenVPN #"
         echo -e "$VERT""###########################"
-				echo -e "$BLANC"" "
+		echo -e "$BLANC"" "
         apt-get -y install openvpn easy-rsa zip dnsutils
         echo -e "$VERT""##################################"
         echo -e "$VERT""# Création des clés/certificatst #"
         echo -e "$VERT""##################################"
-				echo -e "$BLANC"" "
+		echo -e "$BLANC"" "
         cd /etc/openvpn/
         mkdir easy-rsa
         cp -R /usr/share/easy-rsa/* easy-rsa/
@@ -70,7 +70,7 @@ else
         echo -e "$VERT""########################################"
         echo -e "$VERT""# Création de la configuration serveur #"
         echo -e "$VERT""########################################"
-				echo -e "$BLANC"" "
+		echo -e "$BLANC"" "
         mkdir /etc/openvpn/jail
         mkdir /etc/openvpn/jail//tmp
         mkdir /etc/openvpn/confuser
@@ -116,7 +116,7 @@ log-append /var/log/openvpn/openvpn.log #Fchier log" > server.conf
         echo -e "$VERT""########################"
         echo -e "$VERT""# Configuration réseau #"
         echo -e "$VERT""########################"
-				echo -e "$BLANC"" "
+		echo -e "$BLANC"" "
         systemctl enable openvpn #Activation d'OpenVPn au boot
         service openvpn restart #Démarrage du daemon OpenVPN
         sed -i 's|#net.ipv4.ip_forward=1|net.ipv4.ip_forward=1|' /etc/sysctl.conf
@@ -134,14 +134,14 @@ log-append /var/log/openvpn/openvpn.log #Fchier log" > server.conf
 		        echo -e "$BLEU""Un utiisateur ne peut effectuer qu'une connexion à la fois."
 		        echo -e "$BLEU""Mais vous pouvez créer autant d'utilisateurs que vous voulez,"
 		        echo -e "$BLEU""et donc avoir autant de connexions simultanées que vous voulez ! :)"
-						echo -e "$BLANC"" "
+				echo -e "$BLANC"" "
 		        read -p "Nom de l'utilisateur (pas de caractères scpéciaux) : " CLIENT
 		        PORT=`grep port /etc/openvpn/server.conf | awk '{print $2}'`
 		        IP=`dig +short myip.opendns.com @resolver1.opendns.com` #On récupère l'IP publique
 		        echo -e "$VERT""####################################"
 		        echo -e "$VERT""# Création des clés et certificats #"
 		        echo -e "$VERT""####################################"
-						echo -e "$BLANC"" "
+				echo -e "$BLANC"" "
 		        cd /etc/openvpn/easy-rsa
 		        source vars
 		        ./build-key-pass $CLIENT
@@ -150,7 +150,7 @@ log-append /var/log/openvpn/openvpn.log #Fchier log" > server.conf
 		        echo -e "$VERT""##########################################"
 		        echo -e "$VERT""# Création de la configuration du client #"
 		        echo -e "$VERT""##########################################"
-						echo -e "$BLANC"" "
+				echo -e "$BLANC"" "
 		        cd /etc/openvpn/confuser/$CLIENT/
 echo "#Client
 client
@@ -184,7 +184,7 @@ verb 3 #Niveau de log" > client.conf
 		        break
 		    else #Si le serveur n'a pas été installé
 		    	echo -e "$ROUGE""Vous devez installez le serveur avant de créer des utilisateurs."
-					echo -e "$BLANC"" "
+				echo -e "$BLANC"" "
 		    	break
 		    fi
       ;;
