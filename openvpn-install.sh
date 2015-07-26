@@ -23,7 +23,7 @@ then
   exit
 else
   PS3='Entrez votre choix: '
-  options=("Installer le serveur OpenVPN" "Créer un utilisateur" "Désinstaller OpenVPN" "Quiter")
+  options=("Installer le serveur OpenVPN" "Créer un utilisateur" "Désinstaller OpenVPN" "Quitter")
   select opt in "${options[@]}"
   do
     case $opt in #1er CHOIX
