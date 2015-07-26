@@ -6,13 +6,13 @@ YELLOW="\033[1;33m"
 BLUE="\033[1;34m"
 DEFAULT="\033[0m"
 
-echo -e "$BLUE""#######################################################################"
-echo -e "$BLUE""#                                                                     #"
+echo -e "$BLUE""######################################################################"
+echo -e "$BLUE""#                                                                    #"
 echo -e "$BLUE""#  ""$YELLOW""This script will install an OpenVPN server on Debian 8 only.      ""$BLUE""#"
 echo -e "$BLUE""#  ""$YELLOW""The server will use the TCP protocol on the port of your choice,  ""$BLUE""#"
 echo -e "$BLUE""#  ""$YELLOW""and will also use the French Data Network's (FDN) DNS servers.    ""$BLUE""#"
-echo -e "$BLUE""#                                                                     #"
-echo -e "$BLUE""#######################################################################""$DEFAULT"
+echo -e "$BLUE""#                                                                    #"
+echo -e "$BLUE""######################################################################""$DEFAULT"
 
 if [ "$UID" -ne "0" ] #We check the user
 then
