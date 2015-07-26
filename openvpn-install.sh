@@ -45,7 +45,7 @@ else
         read -p 'Port to use with the VPN: ' PORT
         while [[ $log!="yes" && $log!="no" ]]
         do
-          read -p "Do you want to enable server logging ? (yes/no)" log
+          read -p 'Do you want to enable server logging ? (yes/no) ' log
         done
         IP=`dig +short myip.opendns.com @resolver1.opendns.com` #We get the public IP of the server
         echo -e "$GREEN""###########################"
