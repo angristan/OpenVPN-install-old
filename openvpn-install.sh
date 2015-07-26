@@ -16,8 +16,8 @@ echo -e "$BLUE""################################################################
 
 if [ "$UID" -ne "0" ] #We check the user
 then
-   echo -e "$RED""Please use this script as root.""$DEFAULT"
-   exit
+  echo -e "$RED""Please use this script as root.""$DEFAULT"
+  exit
 elif [[ ! -e /dev/net/tun ]] #We check that the TUN module is activated
 then
   echo -e "$RED""TUN/TAP is not activated.""$DEFAULT"
@@ -43,6 +43,22 @@ else
           break
         fi
         read -p 'Port to use with the VPN: ' PORT
+        PS3='Do you want to enable server's logging ?
+        choices=("Yes" "No")
+        select opt in "${choices[@]}"
+        do
+          case $opt in
+            "Yes")
+              log=true
+            ;;
+            "No")
+              log=false
+            ;;
+            *)
+              echo "Wrong choice."
+            ;;
+            esac
+        done
         IP=`dig +short myip.opendns.com @resolver1.opendns.com` #We get the public IP of the server
         echo -e "$GREEN""###########################"
         echo -e "$GREEN""# Installation of OpenVPN #"
@@ -97,16 +113,23 @@ group nogroup
 chroot /etc/openvpn/jail
 persist-key
 persist-tun
-comp-lzo #Compression
+comp-lzo #Compression" > server.conf
+        if [ $log=true ]
+        then
+          echo "
 
 #Log
 verb 3 #Log level
 mute 20
 status openvpn-status.log
-log-append /var/log/openvpn/openvpn.log #Fchier log" > server.conf
-#End of conf
+log-append /var/log/openvpn/openvpn.log #Log file" >> server.conf
         mkdir /var/log/openvpn/ #We create the log folder and file
         touch /var/log/openvpn/openvpn.log
+        elif [ $log!=false && $log!=true ]
+        then
+          echo -e "$RED""ERROR - Please uninstall and retry""$DEFAULT"
+          exit
+        fi
         echo -e "$GREEN""#########################"
         echo -e "$GREEN""# Network configuration #"
         echo -e "$GREEN""#########################""$DEFAULT"
