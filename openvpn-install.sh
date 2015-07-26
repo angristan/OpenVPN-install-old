@@ -43,7 +43,7 @@ else
           break
         fi
         read -p 'Port to use with the VPN: ' PORT
-        while [[ $log!="yes" && $log!="no" ]]
+        while [[ $log !=  "yes" && $log != "no" && $log != "Yes" && $log != "No" && $log != "y" && $log != "n" && $log != "Y" && $log != "N" ]]
         do
           read -p 'Do you want to enable server logging ? (yes/no) ' log
         done
@@ -102,7 +102,7 @@ chroot /etc/openvpn/jail
 persist-key
 persist-tun
 comp-lzo #Compression" > server.conf
-        if [ $log="yes" ]
+        if [[ $log = "yes" || $log = "Yes" || $log = "y" || $log = "Y" ]]
         then
           echo "
 
@@ -113,10 +113,6 @@ status openvpn-status.log
 log-append /var/log/openvpn/openvpn.log #Log file" >> server.conf
         mkdir /var/log/openvpn/ #We create the log folder and file
         touch /var/log/openvpn/openvpn.log
-        elif [ $log!="no" && $log!="yes" ]
-        then
-          echo -e "$RED""ERROR - Please uninstall and retry""$DEFAULT"
-          exit
         fi
         echo -e "$GREEN""#########################"
         echo -e "$GREEN""# Network configuration #"
