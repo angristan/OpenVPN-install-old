@@ -43,10 +43,10 @@ else
           break
         fi
         read -p 'Port to use with the VPN: ' PORT
-        if [[ $log!="yes" && $log!="no" ]]
-        then
+        while [[ $log!="yes" && $log!="no" ]]
+        do
           read -p "Do you want to enable server logging ? (yes/no)" log
-        fi
+        done
         IP=`dig +short myip.opendns.com @resolver1.opendns.com` #We get the public IP of the server
         echo -e "$GREEN""###########################"
         echo -e "$GREEN""# Installation of OpenVPN #"
