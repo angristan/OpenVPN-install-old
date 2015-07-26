@@ -43,22 +43,10 @@ else
           break
         fi
         read -p 'Port to use with the VPN: ' PORT
-        PS3='Do you want to enable server\'s logging ?
-        choices=("Yes" "No")
-        select opt in "${choices[@]}"
-        do
-          case $opt in
-            "Yes")
-              log=true
-            ;;
-            "No")
-              log=false
-            ;;
-            *)
-              echo "Wrong choice."
-            ;;
-            esac
-        done
+        if [ $log!="yes" && $log!="no" ]
+        then
+          read -p "Do you want to enable server logging ? (yes/no)" log
+        fi
         IP=`dig +short myip.opendns.com @resolver1.opendns.com` #We get the public IP of the server
         echo -e "$GREEN""###########################"
         echo -e "$GREEN""# Installation of OpenVPN #"
@@ -114,7 +102,7 @@ chroot /etc/openvpn/jail
 persist-key
 persist-tun
 comp-lzo #Compression" > server.conf
-        if [ $log=true ]
+        if [ $log="yes" ]
         then
           echo "
 
@@ -125,7 +113,7 @@ status openvpn-status.log
 log-append /var/log/openvpn/openvpn.log #Log file" >> server.conf
         mkdir /var/log/openvpn/ #We create the log folder and file
         touch /var/log/openvpn/openvpn.log
-        elif [ $log!=false && $log!=true ]
+        elif [ $log!="no" && $log!="yes" ]
         then
           echo -e "$RED""ERROR - Please uninstall and retry""$DEFAULT"
           exit
