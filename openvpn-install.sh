@@ -105,7 +105,6 @@ comp-lzo #Compression" > server.conf
         if [[ $log = "yes" || $log = "Yes" || $log = "y" || $log = "Y" ]]
         then
           echo "
-
 #Log
 verb 3 #Log level
 mute 20
