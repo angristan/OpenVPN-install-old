@@ -9,17 +9,19 @@ BLANC="\\033[1;37m"
 echo -e "${BLEU}""###########################################################################"
 echo -e "$BLEU""#                                                                         #"
 echo -e "$BLEU""#  ""$JAUNE""Ce script bash installe un serveur OpenVPN sur Debian 8 uniquement""$BLEU""     #"
-echo -e "$BLEU""# ""$JAUNE""Le serveur utilisera le protocole TCP sur le port de votre choix       ""$BLEU"" #"
+echo -e "$BLEU""#  ""$JAUNE""Le serveur utilisera le protocole TCP sur le port de votre choix      ""$BLEU"" #"
 echo -e "$BLEU""#                                                                         #"
 echo -e "$BLEU""###########################################################################"
 
 if [ "$UID" -ne "0" ] #On vérifie les droits
 then
    echo -e "$ROUGE""Veuillez exécuter ce script en tant que root."
+	 echo -e "$BLANC"" "
    exit
 elif [[ ! -e /dev/net/tun ]] #On vérifie que le module TUN est activé
 then
 	echo -e "$ROUGE""TUN/TAP n'est pas activé."
+	echo -e "$BLANC"" "
   exit
 else
   PS3='Entrez votre choix: '
@@ -37,8 +39,9 @@ else
         then
           INTERFACE="venet0"
         else
-          echo "Votre interface réseau n'est pas supportée."
-          echo "Merci de contacter Angristan :)"
+          echo -e "$ROUGE""Votre interface réseau n'est pas supportée."
+          echo -e "$ROUGE""Merci de contacter Angristan :)"
+					echo -e "$BLANC"" "
           break
         fi
         read -p 'Port à utiliser pour le VPN : ' PORT
@@ -46,10 +49,12 @@ else
         echo -e "$VERT""###########################"
         echo -e "$VERT""# Installation de OpenVPN #"
         echo -e "$VERT""###########################"
+				echo -e "$BLANC"" "
         apt-get -y install openvpn easy-rsa zip dnsutils
         echo -e "$VERT""##################################"
         echo -e "$VERT""# Création des clés/certificatst #"
         echo -e "$VERT""##################################"
+				echo -e "$BLANC"" "
         cd /etc/openvpn/
         mkdir easy-rsa
         cp -R /usr/share/easy-rsa/* easy-rsa/
@@ -65,6 +70,7 @@ else
         echo -e "$VERT""########################################"
         echo -e "$VERT""# Création de la configuration serveur #"
         echo -e "$VERT""########################################"
+				echo -e "$BLANC"" "
         mkdir /etc/openvpn/jail
         mkdir /etc/openvpn/jail//tmp
         mkdir /etc/openvpn/confuser
@@ -110,6 +116,7 @@ log-append /var/log/openvpn/openvpn.log #Fchier log" > server.conf
         echo -e "$VERT""########################"
         echo -e "$VERT""# Configuration réseau #"
         echo -e "$VERT""########################"
+				echo -e "$BLANC"" "
         systemctl enable openvpn #Activation d'OpenVPn au boot
         service openvpn restart #Démarrage du daemon OpenVPN
         sed -i 's|#net.ipv4.ip_forward=1|net.ipv4.ip_forward=1|' /etc/sysctl.conf
@@ -127,12 +134,14 @@ log-append /var/log/openvpn/openvpn.log #Fchier log" > server.conf
 		        echo -e "$BLEU""Un utiisateur ne peut effectuer qu'une connexion à la fois."
 		        echo -e "$BLEU""Mais vous pouvez créer autant d'utilisateurs que vous voulez,"
 		        echo -e "$BLEU""et donc avoir autant de connexions simultanées que vous voulez ! :)"
+						echo -e "$BLANC"" "
 		        read -p "Nom de l'utilisateur (pas de caractères scpéciaux) : " CLIENT
 		        PORT=`grep port /etc/openvpn/server.conf | awk '{print $2}'`
 		        IP=`dig +short myip.opendns.com @resolver1.opendns.com` #On récupère l'IP publique
 		        echo -e "$VERT""####################################"
 		        echo -e "$VERT""# Création des clés et certificats #"
 		        echo -e "$VERT""####################################"
+						echo -e "$BLANC"" "
 		        cd /etc/openvpn/easy-rsa
 		        source vars
 		        ./build-key-pass $CLIENT
@@ -141,6 +150,7 @@ log-append /var/log/openvpn/openvpn.log #Fchier log" > server.conf
 		        echo -e "$VERT""##########################################"
 		        echo -e "$VERT""# Création de la configuration du client #"
 		        echo -e "$VERT""##########################################"
+						echo -e "$BLANC"" "
 		        cd /etc/openvpn/confuser/$CLIENT/
 echo "#Client
 client
@@ -174,6 +184,7 @@ verb 3 #Niveau de log" > client.conf
 		        break
 		    else #Si le serveur n'a pas été installé
 		    	echo -e "$ROUGE""Vous devez installez le serveur avant de créer des utilisateurs."
+					echo -e "$BLANC"" "
 		    	break
 		    fi
       ;;
