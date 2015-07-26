@@ -191,7 +191,7 @@ verb 3 #Niveau de log" > client.conf
         echo -e "$VERT""######################################################""$DEFAULT"
         break
       ;;
-      "Quiter")
+      "Quitter")
         break
       ;;
       *)
