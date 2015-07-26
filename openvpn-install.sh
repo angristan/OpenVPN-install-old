@@ -11,7 +11,7 @@ echo -e "$BLEU""#                                                               
 echo -e "$BLEU""#  ""$JAUNE""Ce script bash installe un serveur OpenVPN sur Debian 8 uniquement""$BLEU""     #"
 echo -e "$BLEU""#  ""$JAUNE""Le serveur utilisera le protocole TCP sur le port de votre choix      ""$BLEU"" #"
 echo -e "$BLEU""#                                                                         #"
-echo -e "$BLEU""###########################################################################"
+echo -e "$BLEU""###########################################################################""$DEFAULT"
 
 if [ "$UID" -ne "0" ] #On vérifie les droits
 then
