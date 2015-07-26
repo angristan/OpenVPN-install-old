@@ -8,9 +8,9 @@ DEFAULT="\033[0m"
 
 echo -e "$BLUE""###########################################################################"
 echo -e "$BLUE""#                                                                         #"
-echo -e "$BLUE""#  ""$YELLOW""This script will install an OpenVPN server on Debian 8 only.           ""$BLUE""#"
-echo -e "$BLUE""#  ""$YELLOW""The server will use the TCP protocol on the port of your choice,       ""$BLUE""#"
-echo -e "$BLUE""#  ""$YELLOW""and will also use the French Data Network's (FDN) DNS servers.         ""$BLUE""#"
+echo -e "$BLUE""#  ""$YELLOW""This script will install an OpenVPN server on Debian 8 only.      ""$BLUE""#"
+echo -e "$BLUE""#  ""$YELLOW""The server will use the TCP protocol on the port of your choice,  ""$BLUE""#"
+echo -e "$BLUE""#  ""$YELLOW""and will also use the French Data Network's (FDN) DNS servers.    ""$BLUE""#"
 echo -e "$BLUE""#                                                                         #"
 echo -e "$BLUE""###########################################################################""$DEFAULT"
 
