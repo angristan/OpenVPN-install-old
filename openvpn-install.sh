@@ -8,9 +8,9 @@ DEFAULT="\033[0m"
 
 echo -e "$BLUE""###########################################################################"
 echo -e "$BLUE""#                                                                         #"
-echo -e "$BLUE""#  ""$YELLOW""This script will install an OpenVPN server on Debian 8 only.            ""$BLUE""#"
-echo -e "$BLUE""#  ""$YELLOW""The server will use the TCP protocol on the port of your choice,        ""$BLUE""#"
-echo -e "$BLUE""#  ""$YELLOW""and will also use the French Data Network's (FDN) DNS servers.          ""$BLUE""#"
+echo -e "$BLUE""#  ""$YELLOW""This script will install an OpenVPN server on Debian 8 only.           ""$BLUE""#"
+echo -e "$BLUE""#  ""$YELLOW""The server will use the TCP protocol on the port of your choice,       ""$BLUE""#"
+echo -e "$BLUE""#  ""$YELLOW""and will also use the French Data Network's (FDN) DNS servers.         ""$BLUE""#"
 echo -e "$BLUE""#                                                                         #"
 echo -e "$BLUE""###########################################################################""$DEFAULT"
 
@@ -24,8 +24,8 @@ then
   exit
 else
   PS3='Enter your choice : '
-  options=("Install the OpenVPN server" "Create a user" "Uninstall OpenVPN" "Exit")
-  select opt in "${options[@]}"
+  choices=("Install the OpenVPN server" "Create a user" "Uninstall OpenVPN" "Exit")
+  select opt in "${choices[@]}"
   do
     case $opt in #1st choice
       "Install the OpenVPN server")
@@ -193,8 +193,9 @@ verb 3 #Log level" > client.conf
       "Exit") #4rth choice
         break
       ;;
-      *)
-        echo "Invalid choice.";;
+      *) #Else
+        echo "Invalid choice."
+      ;;
     esac
   done
 fi
