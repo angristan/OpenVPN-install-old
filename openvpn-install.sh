@@ -74,13 +74,13 @@ else
         mkdir /etc/openvpn/jail//tmp
         mkdir /etc/openvpn/confuser
         cd /etc/openvpn
-echo "#Serveur
+echo "#Server
 mode server
 proto tcp
 port $PORT
 dev tun
 
-#Clés et certificats
+#Keys and certificates
 ca ca.crt
 cert server.crt
 key server.key
@@ -88,14 +88,14 @@ dh dh2048.pem
 tls-auth the.key 0
 cipher AES-256-CBC
 
-#Réseau
+#Network
 server 10.10.10.0 255.255.255.0
 push "redirect-gateway def1 bypass-dhcp"
 push "dhcp-option DNS 80.67.169.12" #French Data Network's (FDN) DNS servers
 push "dhcp-option DNS 80.67.169.40"
 keepalive 10 120
 
-#Sécurité
+#Security
 user nobody
 group nogroup
 chroot /etc/openvpn/jail
