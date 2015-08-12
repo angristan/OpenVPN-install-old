@@ -10,7 +10,7 @@ echo -e "$BLUE""################################################################
 echo -e "$BLUE""#                                                                    #"
 echo -e "$BLUE""#  ""$YELLOW""This script will install an OpenVPN server on Debian 8 only.      ""$BLUE""#"
 echo -e "$BLUE""#  ""$YELLOW""The server will use the TCP protocol on the port of your choice,  ""$BLUE""#"
-echo -e "$BLUE""#  ""$YELLOW""and will also use the French Data Network's (FDN) DNS servers.    ""$BLUE""#"
+echo -e "$BLUE""#  ""$YELLOW""and will also use the 2 nearest OpenNIC DNS servers               ""$BLUE""#"
 echo -e "$BLUE""#                                                                    #"
 echo -e "$BLUE""######################################################################""$DEFAULT"
 
@@ -48,6 +48,7 @@ else
           read -p 'Do you want to enable server logging ? (yes/no) ' log
         done
         IP=`dig +short myip.opendns.com @resolver1.opendns.com` #We get the public IP of the server
+        read ns1 ns2 <<< $(curl -s https://api.opennicproject.org/geoip/ | head -2 | awk '{print $1}')
         echo -e "$GREEN""###########################"
         echo -e "$GREEN""# Installation of OpenVPN #"
         echo -e "$GREEN""###########################""$DEFAULT"
@@ -91,8 +92,8 @@ cipher AES-256-CBC
 #Network
 server 10.10.10.0 255.255.255.0
 push "redirect-gateway def1 bypass-dhcp"
-push "dhcp-option DNS 80.67.169.12" #French Data Network's (FDN) DNS servers
-push "dhcp-option DNS 80.67.169.40"
+push "dhcp-option $ns1" #Nearest OpenNIC servers
+push "dhcp-option $ns2"
 keepalive 10 120
 
 #Security
