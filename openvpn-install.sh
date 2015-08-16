@@ -29,8 +29,8 @@ else
   do
     case $opt in #1st choice
       "Install the OpenVPN server")
-        INT_eth0=`ifconfig | grep "eth0" | awk '{print $1}'`
-        INT_venet0=`ifconfig | grep "venet0:0" | awk '{print $1}'`
+        INT_eth0=$(ifconfig | grep "eth0" | awk '{print $1}')
+        INT_venet0=$(ifconfig | grep "venet0:0" | awk '{print $1}')
         if [[ -n "$INT_eth0" ]] && [[ $INT_eth0 = "eth0" ]]
         then
           INTERFACE="eth0"
@@ -47,12 +47,12 @@ else
         do
           read -p 'Do you want to enable server logging ? (yes/no) ' log
         done
-        IP=`dig +short myip.opendns.com @resolver1.opendns.com` #We get the public IP of the server
-        read ns1 ns2 <<< $(curl -s https://api.opennicproject.org/geoip/ | head -2 | awk '{print $1}')
         echo -e "$GREEN""###########################"
         echo -e "$GREEN""# Installation of OpenVPN #"
         echo -e "$GREEN""###########################""$DEFAULT"
-        apt-get -y install openvpn easy-rsa zip dnsutils
+        apt-get -y install openvpn easy-rsa zip dnsutils dig curl
+        IP=$(dig +short myip.opendns.com @resolver1.opendns.com) #We get the public IP of the server
+        read ns1 ns2 <<< $(curl -s https://api.opennicproject.org/geoip/ | head -2 | awk '{print $1}')
         echo -e "$GREEN""###################################"
         echo -e "$GREEN""#  Keys and certificates creation #"
         echo -e "$GREEN""###################################""$DEFAULT"
@@ -75,10 +75,10 @@ else
         mkdir /etc/openvpn/jail//tmp
         mkdir /etc/openvpn/confuser
         cd /etc/openvpn
-echo "#Server
+echo '#Server
 mode server
 proto tcp
-port $PORT
+port '$PORT'
 dev tun
 
 #Keys and certificates
@@ -92,8 +92,8 @@ cipher AES-256-CBC
 #Network
 server 10.10.10.0 255.255.255.0
 push "redirect-gateway def1 bypass-dhcp"
-push "dhcp-option $ns1" #Nearest OpenNIC servers
-push "dhcp-option $ns2"
+push "dhcp-option '$ns1'" #Nearest OpenNIC servers
+push "dhcp-option '$ns2'"
 keepalive 10 120
 
 #Security
@@ -102,7 +102,7 @@ group nogroup
 chroot /etc/openvpn/jail
 persist-key
 persist-tun
-comp-lzo #Compression" > server.conf
+comp-lzo #Compression' > server.conf
         if [[ $log = "yes" || $log = "Yes" || $log = "y" || $log = "Y" ]]
         then
           echo "
@@ -117,12 +117,12 @@ log-append /var/log/openvpn/openvpn.log #Log file" >> server.conf
         echo -e "$GREEN""#########################"
         echo -e "$GREEN""# Network configuration #"
         echo -e "$GREEN""#########################""$DEFAULT"
-        systemctl enable openvpn #Autostart of OpenVPN server's daemon activation
-        service openvpn restart #We start the OpenVPN server's daemon
+        systemctl enable openvpn #Enabling the autostart of OpenVPN daemon
+        service openvpn restart #We start the OpenVPN server
         sed -i 's|#net.ipv4.ip_forward=1|net.ipv4.ip_forward=1|' /etc/sysctl.conf
         sysctl -p
         iptables -t nat -A POSTROUTING -s 10.10.10.0/24 -o $INTERFACE -j MASQUERADE
-        echo "!/bin/sh 
+        echo '!/bin/sh 
 #/etc/init.d/firewall.sh
  
 # Reset rules
@@ -130,7 +130,7 @@ sudo iptables -t filter -F
 sudo iptables -t filter -X
 
 #OpenVPN
-sudo iptables -t nat -A POSTROUTING -s 10.10.10.0/24 -o $INTERFACE -j MASQUERADE" > /etc/init.d/fw-openvpn
+sudo iptables -t nat -A POSTROUTING -s 10.10.10.0/24 -o '$INTERFACE' -j MASQUERADE' > /etc/init.d/fw-openvpn
 		chmod 755 /etc/init.d/fw-openvpn
 		update-rc.d /etc/init.d/fw-openvpn defaults #Saving iptables rules in case of reboot
 		echo -e "$GREEN""Installation done"
@@ -143,8 +143,8 @@ sudo iptables -t nat -A POSTROUTING -s 10.10.10.0/24 -o $INTERFACE -j MASQUERADE
             echo -e "$BLUE""But you can create unlimited users !"
             echo -e "$BLUE""So you can have unlimited simultaneous connections :)""$DEFAULT"
             read -p "Username (no special characters) : " CLIENT
-            PORT=`grep port /etc/openvpn/server.conf | awk '{print $2}'`
-            IP=`dig +short myip.opendns.com @resolver1.opendns.com` #We get the public IP adress
+            PORT=$(grep port /etc/openvpn/server.conf | awk '{print $2}')
+            IP=$(dig +short myip.opendns.com @resolver1.opendns.com) #We get the public IP adress
             echo -e "$GREEN""###################################"
             echo -e "$GREEN""#  Keys and certificates creation #"
             echo -e "$GREEN""###################################""$DEFAULT"
@@ -157,18 +157,18 @@ sudo iptables -t nat -A POSTROUTING -s 10.10.10.0/24 -o $INTERFACE -j MASQUERADE
             echo -e "$GREEN""# Creation of the user's configuration #"
             echo -e "$GREEN""########################################""$DEFAULT"
             cd /etc/openvpn/confuser/$CLIENT/
-echo "#Client
+echo '#Client
 client
 dev tun
 proto tcp-client
-remote $IP $PORT
+remote '$IP $PORT'
 resolv-retry infinite
 cipher AES-256-CBC
 
 #Clés et certificats
 ca ca.crt
-cert $CLIENT.crt
-key $CLIENT.key
+cert '$CLIENT'.crt
+key '$CLIENT'.key
 tls-auth the.key 1
 
 #Sécurité
@@ -176,7 +176,7 @@ nobind
 persist-key
 persist-tun
 comp-lzo #Compression
-verb 3 #Log level" > client.conf
+verb 3 #Log level' > client.conf
             cp client.conf client.ovpn
             chmod +r * #We make the keys readable
             zip $CLIENT-vpn.zip * #We put all the configuration in a zip file
@@ -192,20 +192,30 @@ verb 3 #Log level" > client.conf
         fi
       ;;
       "Uninstall OpenVPN") #3rd choice
-        systemctl stop openvpn
-        systemctl disable openvpn
-        rm -rf /etc/openvpn
-        rm ~/*-vpn.zip
-        rm -rf /var/log/openvpn/
-        sed -i 's|net.ipv4.ip_forward=1|#net.ipv4.ip_forward=1|' /etc/sysctl.conf
-        sysctl -p
-        update-rc.d -f /etc/init.d/fw-openvpn remove
-        rm /etc/init.d/fw-openvpn
-        apt-get autoremove --purge openvpn easy-rsa -y
-        echo -e "$GREEN""########################################################"
-        echo -e "$GREEN""# The OpenVPN server has been successfully uninstalled #"
-        echo -e "$GREEN""########################################################""$DEFAULT"
-        break
+		while [[ $check !=  "yes" && $check != "no" && $check != "Yes" && $check != "No" && $check != "y" && $check != "n" && $check != "Y" && $check != "N" ]]
+        do
+          read -p 'Do you really want to uninstall OpenVPN ? (yes/no) ' check
+        done
+        if [[ $check = "yes" || $check = "Yes" || $check = "y" || $check = "Y" ]]
+        then
+	        systemctl stop openvpn
+	        systemctl disable openvpn
+	        rm -rf /etc/openvpn
+	        rm ~/*-vpn.zip
+	        rm -rf /var/log/openvpn/
+	        sed -i 's|net.ipv4.ip_forward=1|#net.ipv4.ip_forward=1|' /etc/sysctl.conf
+	        sysctl -p
+	        update-rc.d -f /etc/init.d/fw-openvpn remove
+	        rm /etc/init.d/fw-openvpn
+	        apt-get autoremove --purge openvpn easy-rsa -y
+	        echo -e "$GREEN""########################################################"
+	        echo -e "$GREEN""# The OpenVPN server has been successfully uninstalled #"
+	        echo -e "$GREEN""########################################################""$DEFAULT"
+	        break
+	    else
+	    	echo -e "$RED""Uninstall canceled.""$DEFAULT"
+	    	exit 1
+        fi
       ;;
       "Exit") #4rth choice
         break
