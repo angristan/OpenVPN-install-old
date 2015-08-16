@@ -1,10 +1,7 @@
 # OpenVPN-install
-Ce script Bash vous permet d'installer un serveur OpenVPN simplement et rapidement sous Debian 8 *uniquement*.
+This script allows you to install an OpenVPN server quickly and esealy on Debian 8 *only*.
 
-Un article sur mon blog au sujet de ce script est en cours de rédaction.
-
-## Utilisation
-Voici les 3 commandes à rentrer :
+## Use
 
 `wget https://raw.githubusercontent.com/Angristan/OpenVPN-install/master/openvpn-install.sh`
 
@@ -12,23 +9,23 @@ Voici les 3 commandes à rentrer :
 
 `./openvpn-install.sh`
 
-Le script vous permet de faire 3 choses : installer OpenVPN, créer un utilisateur (client) et désinstaller complètement OpenVPN. La deuxième option ne fonctionne bien évidemment que si vous avez effectué la première.
+The script allows you to do 3 things : install OpenVPN, create an user, or uninstall OpenVPN.
+The second option can only be used after the first one.
 
-Vous pouvez relancer ce script autant de fois que vous le voulez pour créer des utilisateurs.
+You can use the script as many times as you want to create users (no limit).
 
-Le script supporte actuellement 2 interfaces réseau : **eth0** et **venet0**. Si vous en utilisez une autre, merci de me contacter.
+The script support 2 netwkork interfaces : *eth0** et **venet0**. You can check yours with the `ifconfig` command. If you're using another interface, please contact me.
 
-Le script ajoute des règles au firewall (**iptables**). Si vous en utilisez déjà, ou que vous les ajoutez au démarrage de votre serveur, modifiez le script pour enlever la partie iptables, et ajoutez la règle vous même.
 
-## Quel serveur utiliser ?
-Ce script marchera sur :
-- Serveur dédié
-- VPS VMware et KVM
-- VPS OpenVZ avec le module TUN/TAP activé (vous pouvez en trouver chez [PulseHeberg](http://manager.pulseheberg.com/aff.php?aff=1204))
+## Wich server should I use ?
+This script will work on :
+- Dedeciated server
+- VMware or KVM/QEMU VPS
+- OpenVZ VPS with the TUN (TUN/TAP) mudule activated (you can find some at [PulseHeberg](http://angristan.fr/pulseheberg/))
 
-## Contact
+## Contact / Feedback
 
-http://angristan.fr/contact/
+http://angristan.fr/contact/ or open an [issue](https://github.com/Angristan/OpenVPN-install/issues)
 
 ## Licence
 
