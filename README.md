@@ -14,12 +14,19 @@ The second option can only be used after the first one.
 
 You can use the script as many times as you want to create users (no limit).
 
-The script support 2 netwkork interfaces : *eth0** et **venet0**. You can check yours with the `ifconfig` command. If you're using another interface, please contact me.
+The script support 2 netwkork interfaces : **eth0** et **venet0**. You can check yours with the `ifconfig` command. If you're using another interface, please contact me.
 
+## Informations
+
+The script will detect the 2 nearest OpenNIC DNS resolvers to the OpenVPN server, so the client will use them.
+
+During the installation, you can choose the port that OpenVPN will be using, and you can also choose to enable logs.
+
+The uninstallation function delete the packages, server conf and clients configurations.
 
 ## Wich server should I use ?
 This script will work on :
-- Dedeciated server
+- Dedicated server
 - VMware or KVM/QEMU VPS
 - OpenVZ VPS with the TUN (TUN/TAP) mudule activated (you can find some at [PulseHeberg](http://angristan.fr/pulseheberg/))
 
