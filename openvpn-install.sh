@@ -39,7 +39,7 @@ else
           INTERFACE="venet0"
         else
           echo -e "$RED""Your network interface is not supported."
-          echo -e "$RED""Please contact Angristan ;)""$DEFAULT"
+          echo -e "$RED""Please contact Angristan""$DEFAULT"
           break
         fi
         read -p 'Port to use with the VPN: ' PORT
@@ -122,8 +122,18 @@ log-append /var/log/openvpn/openvpn.log #Log file" >> server.conf
         sed -i 's|#net.ipv4.ip_forward=1|net.ipv4.ip_forward=1|' /etc/sysctl.conf
         sysctl -p
         iptables -t nat -A POSTROUTING -s 10.10.10.0/24 -o $INTERFACE -j MASQUERADE
-        sh -c "iptables-save > /etc/iptables.rules" #Saving iptables rules in case of reboot
-        echo "pre-up iptables-restore < /etc/iptables.rules" >> /etc/network/interfaces
+        echo "!/bin/sh 
+#/etc/init.d/firewall.sh
+ 
+# Reset rules
+sudo iptables -t filter -F 
+sudo iptables -t filter -X
+
+#OpenVPN
+sudo iptables -t nat -A POSTROUTING -s 10.10.10.0/24 -o $INTERFACE -j MASQUERADE" > /etc/init.d/fw-openvpn
+		chmod 755 /etc/init.d/fw-openvpn
+		update-rc.d /etc/init.d/fw-openvpn defaults #Saving iptables rules in case of reboot
+		echo -e "$GREEN""Installation done"
       break
       ;;
       "Create a user") #2nd choice
@@ -189,8 +199,8 @@ verb 3 #Log level" > client.conf
         rm -rf /var/log/openvpn/
         sed -i 's|net.ipv4.ip_forward=1|#net.ipv4.ip_forward=1|' /etc/sysctl.conf
         sysctl -p
-        sed -i 's|pre-up iptables-restore < /etc/iptables.rules||' /etc/network/interfaces
-        iptables -F
+        update-rc.d -f /etc/init.d/fw-openvpn remove
+        rm /etc/init.d/fw-openvpn
         apt-get autoremove --purge openvpn easy-rsa -y
         echo -e "$GREEN""########################################################"
         echo -e "$GREEN""# The OpenVPN server has been successfully uninstalled #"
