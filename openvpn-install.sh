@@ -132,7 +132,7 @@ sudo iptables -t filter -X
 #OpenVPN
 sudo iptables -t nat -A POSTROUTING -s 10.10.10.0/24 -o '$INTERFACE' -j MASQUERADE' > /etc/init.d/fw-openvpn
 		chmod 755 /etc/init.d/fw-openvpn
-		update-rc.d /etc/init.d/fw-openvpn defaults #Saving iptables rules in case of reboot
+		systemctl enable fw-openvpn #Saving iptables rules in case of reboot
 		echo -e "$GREEN""Installation done"
       break
       ;;
