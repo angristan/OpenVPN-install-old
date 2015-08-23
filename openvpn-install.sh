@@ -50,7 +50,7 @@ else
         echo -e "$GREEN""###########################"
         echo -e "$GREEN""# Installation of OpenVPN #"
         echo -e "$GREEN""###########################""$DEFAULT"
-        apt-get -y install openvpn easy-rsa zip dnsutils dig curl
+        apt-get -y install openvpn easy-rsa zip dnsutils curl
         IP=$(dig +short myip.opendns.com @resolver1.opendns.com) #We get the public IP of the server
         read ns1 ns2 <<< $(curl -s https://api.opennicproject.org/geoip/ | head -2 | awk '{print $1}')
         echo -e "$GREEN""###################################"
