@@ -92,8 +92,8 @@ cipher AES-256-CBC
 #Network
 server 10.10.10.0 255.255.255.0
 push "redirect-gateway def1 bypass-dhcp"
-push "dhcp-option '$ns1'" #Nearest OpenNIC servers
-push "dhcp-option '$ns2'"
+push "dhcp-option DNS '$ns1'" #Nearest OpenNIC servers
+push "dhcp-option DNS '$ns2'"
 keepalive 10 120
 
 #Security
