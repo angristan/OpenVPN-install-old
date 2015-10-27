@@ -28,7 +28,7 @@ The uninstallation function delete the packages, server conf and clients configu
 This script will work on :
 - Dedicated server
 - VMware or KVM/QEMU VPS
-- OpenVZ VPS with the TUN (TUN/TAP) mudule activated (you can find some at [PulseHeberg](http://angristan.fr/pulseheberg/))
+- OpenVZ VPS with the TUN (TUN/TAP) mudule activated (you can find some at [Dyjix](http://angristan.fr/dyjix/))
 
 ## Contact / Feedback
 
