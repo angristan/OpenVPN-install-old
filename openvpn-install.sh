@@ -9,7 +9,7 @@ DEFAULT="\033[0m"
 echo -e "$BLUE""######################################################################"
 echo -e "$BLUE""#                                                                    #"
 echo -e "$BLUE""#  ""$YELLOW""This script will install an OpenVPN server on Debian 8 only.      ""$BLUE""#"
-echo -e "$BLUE""#  ""$YELLOW""The server will use the TCP protocol on the port of your choice,  ""$BLUE""#"
+echo -e "$BLUE""#  ""$YELLOW""The server will use the UDP protocol on the port of your choice,  ""$BLUE""#"
 echo -e "$BLUE""#  ""$YELLOW""and will also use the 2 nearest OpenNIC DNS servers               ""$BLUE""#"
 echo -e "$BLUE""#                                                                    #"
 echo -e "$BLUE""######################################################################""$DEFAULT"
@@ -77,7 +77,7 @@ else
         cd /etc/openvpn
 echo '#Server
 mode server
-proto tcp
+proto udp
 port '$PORT'
 dev tun
 
@@ -160,7 +160,7 @@ sudo iptables -t nat -A POSTROUTING -s 10.10.10.0/24 -o '$INTERFACE' -j MASQUERA
 echo '#Client
 client
 dev tun
-proto tcp-client
+proto udp
 remote '$IP $PORT'
 resolv-retry infinite
 cipher AES-256-CBC
