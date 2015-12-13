@@ -122,7 +122,7 @@ log-append /var/log/openvpn/openvpn.log #Log file" >> server.conf
         sed -i 's|#net.ipv4.ip_forward=1|net.ipv4.ip_forward=1|' /etc/sysctl.conf
         sysctl -p
         iptables -t nat -A POSTROUTING -s 10.10.10.0/24 -o $INTERFACE -j MASQUERADE
-        echo '!/bin/sh 
+        echo '#!/bin/sh 
 #/etc/init.d/firewall.sh
  
 # Reset rules
