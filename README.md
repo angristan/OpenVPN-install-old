@@ -1,5 +1,5 @@
 # OpenVPN-install
-This script allows you to install an OpenVPN server quickly and esealy on Debian 8 *only*.
+This script allows you to install an OpenVPN server quickly and easily on Debian 8 *only*.
 
 ## Use
 
@@ -14,9 +14,9 @@ The second option can only be used after the first one.
 
 You can use the script as many times as you want to create users (no limit).
 
-The script support 2 netwkork interfaces : **eth0** et **venet0**. You can check yours with the `ifconfig` command. If you're using another interface, please contact me.
+The script supports 2 network interfaces : **eth0** et **venet0**. You can check yours with the `ifconfig` command. If you're using another interface, please contact me.
 
-## Informations
+## Information
 
 The script will detect the 2 nearest OpenNIC DNS resolvers to the OpenVPN server, so the client will use them.
 
