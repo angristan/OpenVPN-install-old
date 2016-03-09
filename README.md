@@ -1,7 +1,7 @@
 # OpenVPN-install
 The software is abandonned. 
 
-Go check this one : https://github.com/Angristan/openvpn-install-nyr
+Go check this one : https://github.com/Angristan/openvpn-install
 
 
 ### License
