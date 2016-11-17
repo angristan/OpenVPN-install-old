@@ -1,5 +1,5 @@
 # OpenVPN-install
-The software is abandonned. 
+The software is discontinued. 
 
 Go check this one : https://github.com/Angristan/openvpn-install
 
